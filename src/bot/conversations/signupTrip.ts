@@ -10,7 +10,7 @@ import { eventsService } from "@/modules/events";
 export async function signupTrip(conversation: Conversation<Context>, ctx: Context) {
   const user = await usersService.getUser(ctx.from!.id)
   const trips = await eventsService.getTripEvents()
-  const tripsFormatted = formatEvents(trips, { id: true })
+  const tripsFormatted = formatEvents(trips, { ids: true })
 
   let fullname: string;
   let phone: string;
@@ -23,15 +23,20 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
 
   await ctx.reply('[Запись в поход]')
 
+  await ctx.reply('1/5: Выберите номер похода')
   await ctx.reply(tripsFormatted, {
     parse_mode: 'HTML',
     // @ts-ignore
     disable_web_page_preview: true,
   })
 
-  await ctx.reply('1/5: *Выберите номер похода')
   const number = await conversation.form.int()
   const event = trips[number-1]
+  const members = await eventsService.getEventMembers(event.id)
+  if (members.some(member => member.userId == user.id)) {
+    await ctx.reply('Вы уже записаны на этот поход')
+    return
+  }
 
   if (!user.fullname) {
     await ctx.reply('2/5: *Введите ваше ФИО')
@@ -91,5 +96,11 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
     await eventsService.signupToEvent(event.id, user.id)
   })
 
-  await ctx.reply(`Вы успешно записались в поход`)
+  await ctx.reply(formatMessage`
+    Ваша заявка на участие в походе принята. Ознакомьтесь со следующей информацией, чтобы подготовится к походу (<a href="https://vk.com/topic-9577978_34500403">ссылка</a>)
+  `, {
+    parse_mode: 'HTML',
+    // @ts-ignore
+    disable_web_page_preview: true,
+  })
 }

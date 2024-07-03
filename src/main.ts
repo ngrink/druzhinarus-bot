@@ -36,6 +36,7 @@ bot.use(createConversation(builders.addTrip))
 bot.use(createConversation(builders.editTrip))
 bot.use(createConversation(builders.deleteTrip))
 bot.use(createConversation(builders.signupTrip))
+bot.use(createConversation(builders.listTripMembers))
 
 bot.use(mainMenu);
 
@@ -44,7 +45,6 @@ bot.command('menu', commands.menuCommand);
 bot.command('id', commands.getIdCommand);
 
 bot.on("message", (ctx) => {
-  console.log(ctx, ctx.session);
   ctx.reply("Команда не распознана")
 })
 

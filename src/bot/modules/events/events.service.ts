@@ -1,5 +1,7 @@
-import { Event } from "@prisma/client"
+import { Event, EventMember } from "@prisma/client"
+
 import { CreateEventDto, UpdateEventDto } from "./dto"
+import { UserFlavor } from "./events.repository"
 
 type IEventsRepository = {
   createEvent: (data: CreateEventDto) => Promise<Event>
@@ -10,6 +12,8 @@ type IEventsRepository = {
   updateEvent: (id: number, data: UpdateEventDto) => Promise<Event | null>
   deleteEvent: (id: number) => Promise<void>
   signupToEvent(eventId: number, userId: number): Promise<void>
+  getAllEventsMembers(): Promise<(EventMember & UserFlavor)[]> 
+  getEventMembers(eventId: number): Promise<(EventMember & UserFlavor)[]> 
 }
 
 export class EventsService {
@@ -61,5 +65,17 @@ export class EventsService {
 
   async signupToEvent(eventId: number, userId: number) {
     await this.eventsRepository.signupToEvent(eventId, userId)
+  }
+
+  async getAllEventsMembers() {
+    const members = await this.eventsRepository.getAllEventsMembers()
+
+    return members
+  }
+
+  async getEventMembers(eventId: number) {
+    const members = await this.eventsRepository.getEventMembers(eventId)
+
+    return members
   }
 }

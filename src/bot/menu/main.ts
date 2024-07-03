@@ -23,7 +23,7 @@ export const eventsMenu = new Menu<Context>("admin-events-menu")
   .back("<- Назад");
 
 export const tripsMenu = new Menu<Context>("admin-trips-menu")
-  .text("Список участников", async (ctx) => {ctx.reply("4")}).row()
+  .text("Список участников", handlers.listTripMembers).row()
   .text("Добавить поход", handlers.addTripHandler).row()
   .text("Изменить поход", handlers.editTripHandler).row()
   .text("Удалить походы", handlers.deleteTripHandler).row()

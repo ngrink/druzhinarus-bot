@@ -1,5 +1,9 @@
-import { Event, PrismaClient } from '@prisma/client'
+import { Event, EventMember, PrismaClient, User } from '@prisma/client'
 import { CreateEventDto, UpdateEventDto } from './dto'
+
+export type UserFlavor = {
+  user: User
+}
 
 export class EventsRepository {
   prisma: PrismaClient
@@ -104,11 +108,34 @@ export class EventsRepository {
   }
 
   async signupToEvent(eventId: number, userId: number) {
-    await this.prisma.eventMembers.create({
+    await this.prisma.eventMember.create({
       data: {
         userId: userId,
         eventId: eventId
       }
     })
+  }
+
+  async getAllEventsMembers(): Promise<(EventMember & UserFlavor)[]>  {
+    const members = await this.prisma.eventMember.findMany({
+      include: {
+        user: true
+      }
+    })
+
+    return members
+  }
+
+  async getEventMembers(eventId: number): Promise<(EventMember & UserFlavor)[]> {
+    const members = await this.prisma.eventMember.findMany({
+      where: {
+        eventId: eventId
+      },
+      include: {
+        user: true
+      }
+    })
+
+    return members
   }
 }
