@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "dev": "NODE_ENV=development nodemon",
-    "prod": "NODE_ENV=production node dist/main.js"
+    "start:dev": "NODE_ENV=development nodemon",
+    "start:prod": "NODE_ENV=production node dist/main.js",
+    "migrate:dev": "npx dotenv -e .env.development npx prisma migrate dev",
+    "migrate:prod": "npx dotenv -e .env.production npx prisma migrate deploy",
+    "generate": "npx prisma generate"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.8",
+    "dotenv-cli": "^7.4.2",
     "nodemon": "^3.1.4",
     "prisma": "^5.16.0",
     "ts-node": "^10.9.2",

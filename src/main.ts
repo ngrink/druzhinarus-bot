@@ -1,4 +1,5 @@
-import 'dotenv/config'
+import 'config'
+
 import { Bot, session } from "grammy";
 import { hydrate } from "@grammyjs/hydrate";
 import { conversations, createConversation } from '@grammyjs/conversations';
@@ -9,15 +10,11 @@ import { mainMenu } from '@/menu';
 import { Context, sessionOptions } from '@/bot/context';
 import { errorHandler } from '@/bot/error';
 
-const token = process.env.NODE_ENV == 'production'
-  ? process.env.BOT_TOKEN_PRODUCTION
-  : process.env.BOT_TOKEN
-
-if (!token) {
+if (!process.env.BOT_TOKEN) {
   throw new Error("Bot token is not defined");
 }
 
-const bot = new Bot<Context>(token);
+const bot = new Bot<Context>(process.env.BOT_TOKEN);
 commands.setCommands(bot)
 
 bot.use(hydrate())
