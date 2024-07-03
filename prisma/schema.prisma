@@ -12,6 +12,18 @@ enum EventType {
   TRIP
 }
 
+model User {
+  id       Int       @id
+  username String?   @unique
+  fullname String?
+  phone    String?
+  birthday DateTime?
+
+  events EventMembers[]
+
+  @@map("users")
+}
+
 model Event {
   id        Int       @id @default(autoincrement())
   type      EventType
@@ -21,7 +33,19 @@ model Event {
   link      String?
   isPublic  Boolean   @default(true)
 
+  members EventMembers[]
+
   @@map("events")
+}
+
+model EventMembers {
+  eventId Int
+  userId  Int
+  event   Event @relation(fields: [eventId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+
+  @@id([eventId, userId])
+  @@map("events_members")
 }
 
 model Question {

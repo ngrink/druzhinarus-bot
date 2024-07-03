@@ -1,10 +1,19 @@
 import { Middleware } from "grammy";
+import { User } from "grammy/types";
 
 import { mainMenu } from "@/menu";
 import { formatMessage } from "@/helpers";
 import { Context } from "@/bot/context";
+import { usersService } from "@/modules/users";
 
-export const startCommand: Middleware<Context> = (ctx: Context) => {
+export const startCommand: Middleware<Context> = async (ctx: Context) => {
+  const { id, username } = ctx.from as User
+  const user = await usersService.getUser(id)
+
+  if (!user) {
+    await usersService.createUser({ id, username })
+  }
+
   ctx.reply(formatMessage`
     Приветствую! Это чат-бот клуба исторической реконструкции "Морская дружина Рус". Здесь можно получить актуальную информацию по ближайшим мероприятиям, записаться в поход
   
