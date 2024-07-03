@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+enum EventType {
+  COMMON
+  TRIP
+}
+
+model User {
+  id       Int       @id
+  username String?   @unique
+  fullname String?
+  phone    String?
+  birthday DateTime?
+
+  events EventMember[]
+
+  @@map("users")
+}
+
+model Event {
+  id        Int       @id @default(autoincrement())
+  type      EventType
+  title     String
+  startDate DateTime
+  endDate   DateTime?
+  link      String?
+  isPublic  Boolean   @default(true)
+
+  members EventMember[]
+
+  @@map("events")
+}
+
+model EventMember {
+  eventId Int
+  userId  Int
+  event   Event @relation(fields: [eventId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+
+  @@id([eventId, userId])
+  @@map("events_members")
+}
+
+model Question {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+
+  @@map("questions")
+}
+
+model Quote {
+  id     Int     @id @default(autoincrement())
+  text   String
+  author String?
+
+  @@map("quotes")
+}
+
+model Verse {
+  id     Int     @id @default(autoincrement())
+  text   String
+  author String?
+
+  @@map("verses")
+}
