@@ -19,14 +19,14 @@ export const administrationMenu = new Menu<Context>("admin-menu")
 export const eventsMenu = new Menu<Context>("admin-events-menu")
   .text("Добавить мероприятие", handlers.addEventHandler).row()
   .text("Изменить мероприятие", handlers.editEventHandler).row()
-  .text("Удалить мероприятие", handlers.deleteEventHandler).row()
+  .text("Удалить мероприятия", handlers.deleteEventHandler).row()
   .back("<- Назад");
 
 export const tripsMenu = new Menu<Context>("admin-trips-menu")
   .text("Список участников", async (ctx) => {ctx.reply("4")}).row()
   .text("Добавить поход", handlers.addTripHandler).row()
-  .text("Изменить поход", (ctx) => ctx.reply("5")).row()
-  .text("Удалить поход", (ctx) => ctx.reply("6")).row()
+  .text("Изменить поход", handlers.editTripHandler).row()
+  .text("Удалить походы", handlers.deleteTripHandler).row()
   .back("<- Назад");
 
 export const postsMenu = new Menu<Context>("admin-posts-menu")

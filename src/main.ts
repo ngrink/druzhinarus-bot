@@ -36,6 +36,8 @@ bot.use(createConversation(builders.addEvent))
 bot.use(createConversation(builders.editEvent))
 bot.use(createConversation(builders.deleteEvent))
 bot.use(createConversation(builders.addTrip))
+bot.use(createConversation(builders.editTrip))
+bot.use(createConversation(builders.deleteTrip))
 
 bot.use(mainMenu);
 

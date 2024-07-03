@@ -4,6 +4,8 @@ import { CreateEventDto, UpdateEventDto } from "./dto"
 type IEventsRepository = {
   createEvent: (data: CreateEventDto) => Promise<Event>
   getEvents: () => Promise<Event[]>
+  getCommonEvents: () => Promise<Event[]>
+  getTripEvents: () => Promise<Event[]>
   getEvent: (id: number) => Promise<Event | null>
   updateEvent: (id: number, data: UpdateEventDto) => Promise<Event | null>
   deleteEvent: (id: number) => Promise<void>
@@ -24,6 +26,18 @@ export class EventsService {
   
   async getEvents() {
     const events = await this.eventsRepository.getEvents()
+
+    return events
+  }
+
+  async getCommonEvents() {
+    const events = await this.eventsRepository.getCommonEvents()
+
+    return events
+  }
+
+  async getTripEvents() {
+    const events = await this.eventsRepository.getTripEvents()
 
     return events
   }

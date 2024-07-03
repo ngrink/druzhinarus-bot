@@ -6,11 +6,11 @@ import { Context } from "@/bot/context";
 import { formatEvent, formatMessage, isURL, parseEmpty } from "@/helpers";
 import { eventsService } from "@/modules/events";
 
-export async function editEvent(conversation: Conversation<Context>, ctx: Context) {
-  const events = await eventsService.getCommonEvents();
+export async function editTrip(conversation: Conversation<Context>, ctx: Context) {
+  const events = await eventsService.getTripEvents();
 
   if (!events.length) {
-    await ctx.reply(formatMessage`Нет доступных мероприятий`)
+    await ctx.reply(formatMessage`Нет доступных походов`)
     return
   }
 
@@ -18,20 +18,20 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
     .map((event, i) => `[${i + 1}]\n${formatEvent(event)}`)
     .join("\n\n")
 
-  await ctx.reply('[Изменение меропрития]\n\n' + formattedEvents, {
+  await ctx.reply('[Изменение похода]\n\n' + formattedEvents, {
     parse_mode: "HTML",
     // @ts-ignore
     disable_web_page_preview: true,
   })
 
-  await ctx.reply('1/5: *Введите номер мероприятия для изменения')
+  await ctx.reply('1/5: *Введите номер похода для изменения')
   const eventNumber = await conversation.form.int()
 
-  await ctx.reply('2/5: Введите название мероприятия')
+  await ctx.reply('2/5: Введите название похода')
   const eventTitle = parseEmpty(await conversation.form.text())
 
   await ctx.reply(formatMessage`
-    3/5: *Введите дату начала мероприятия
+    3/5: *Введите дату начала похода
   `)
   
   let eventStartDate;
@@ -61,7 +61,7 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
   }
 
   await ctx.reply(formatMessage`
-    4/5: Введите дату конца мероприятия
+    4/5: Введите дату конца похода
   `)
 
   let eventEndDate;
@@ -109,5 +109,5 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
     })
   })
 
-  await ctx.reply(formatMessage`Мероприятие изменено`)
+  await ctx.reply(formatMessage`Поход изменен`)
 }

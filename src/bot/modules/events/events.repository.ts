@@ -38,6 +38,42 @@ export class EventsRepository {
     return events
   }
 
+  async getCommonEvents(): Promise<Event[]> {
+    const events = await this.prisma.event.findMany({
+      where: {
+        type: "COMMON"
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ]
+    })
+
+    return events
+  }
+
+  async getTripEvents(): Promise<Event[]> {
+    const events = await this.prisma.event.findMany({
+      where: {
+        type: "TRIP"
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ]
+    })
+
+    return events
+  }
+
   async getEvent(id: number): Promise<Event | null> {
     const event = await this.prisma.event.findUnique({
       where: {
