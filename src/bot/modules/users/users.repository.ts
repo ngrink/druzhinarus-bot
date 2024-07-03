@@ -43,11 +43,13 @@ export class UsersRepository {
     return user
   }
 
-  async deleteUser(id: number): Promise<void> {
-    await this.prisma.user.delete({
+  async deleteUser(id: number): Promise<User> {
+    const user = await this.prisma.user.delete({
       where: {
         id: id
       }
     })
+
+    return user
   }
 }

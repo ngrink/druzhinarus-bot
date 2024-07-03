@@ -102,4 +102,13 @@ export class EventsRepository {
       }
     })
   }
+
+  async signupToEvent(eventId: number, userId: number) {
+    await this.prisma.eventMembers.create({
+      data: {
+        userId: userId,
+        eventId: eventId
+      }
+    })
+  }
 }

@@ -9,6 +9,7 @@ type IEventsRepository = {
   getEvent: (id: number) => Promise<Event | null>
   updateEvent: (id: number, data: UpdateEventDto) => Promise<Event | null>
   deleteEvent: (id: number) => Promise<void>
+  signupToEvent(eventId: number, userId: number): Promise<void>
 }
 
 export class EventsService {
@@ -56,5 +57,9 @@ export class EventsService {
 
   async deleteEvent(id: number) {
     await this.eventsRepository.deleteEvent(id)
+  }
+
+  async signupToEvent(eventId: number, userId: number) {
+    await this.eventsRepository.signupToEvent(eventId, userId)
   }
 }

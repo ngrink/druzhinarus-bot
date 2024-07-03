@@ -8,8 +8,8 @@ import { usersService } from "@/modules/users";
 
 export const startCommand: Middleware<Context> = async (ctx: Context) => {
   const { id, username } = ctx.from as User
-  const user = await usersService.getUser(id)
-
+  const user = await usersService.getUser(id).catch(() => null)
+  
   if (!user) {
     await usersService.createUser({ id, username })
   }

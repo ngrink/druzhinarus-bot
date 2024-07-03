@@ -6,7 +6,7 @@ type IUsersRepository = {
   getUsers: () => Promise<User[]>
   getUser: (id: number) => Promise<User | null>
   updateUser: (id: number, data: UpdateUserDto) => Promise<User | null>
-  deleteUser: (id: number) => Promise<void>
+  deleteUser: (id: number) => Promise<User>
 }
 
 export class UsersService {
@@ -30,17 +30,26 @@ export class UsersService {
 
   async getUser(id: number) {
     const user = await this.usersRepository.getUser(id)
+    if (!user) {
+      throw new Error(`User ${id} does not exist`);
+    }
 
     return user
   }
 
   async updateUser(id: number, data: UpdateUserDto) {
     const user = await this.usersRepository.updateUser(id, data)
+    if (!user) {
+      throw new Error(`User ${id} does not exist`);
+    }
 
     return user
   }
 
   async deleteUser(id: number) {
-    await this.usersRepository.deleteUser(id)
+    const user = await this.usersRepository.deleteUser(id)
+    if (!user) {
+      throw new Error(`User ${id} does not exist`);
+    }
   }
 }
