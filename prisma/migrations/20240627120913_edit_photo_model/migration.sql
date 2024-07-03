@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Photo" ALTER COLUMN "file_id" SET DATA TYPE TEXT;

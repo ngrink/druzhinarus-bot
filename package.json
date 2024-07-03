@@ -1,0 +1,31 @@
+{
+  "name": "druzhinarus-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "NODE_ENV=development nodemon",
+    "prod": "NODE_ENV=production node dist/main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grammyjs/conversations": "^1.2.0",
+    "@grammyjs/hydrate": "^1.4.1",
+    "@grammyjs/menu": "^1.2.2",
+    "@prisma/client": "^5.16.0",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "grammy": "^1.25.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.16.0",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.2"
+  }
+}
