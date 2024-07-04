@@ -6,7 +6,7 @@ import { Context } from "@/bot/context";
 
 export const mainMenu = new Menu<Context>("main-menu")
   .text("Ближайшие мероприятия", handlers.upcomingEventsHandler).row()
-  .text("Записаться в поход", handlers.signupTripHandler).row()
+  .text("Записаться в поход", handlers.signupTripMenuHandler).row()
   .text("Часто задаваемые вопросы", handlers.faqHandler).row()
   .submenu("Администрирование", "admin-menu", onlyAdmin)
 
@@ -18,15 +18,15 @@ export const administrationMenu = new Menu<Context>("admin-menu")
 
 export const eventsMenu = new Menu<Context>("admin-events-menu")
   .text("Добавить мероприятие", handlers.addEventHandler).row()
-  .text("Изменить мероприятие", handlers.editEventHandler).row()
-  .text("Удалить мероприятия", handlers.deleteEventHandler).row()
+  .text("Изменить мероприятие", handlers.editEventMenuHandler).row()
+  .text("Удалить мероприятия", handlers.deleteEventMenuHandler).row()
   .back("<- Назад");
 
 export const tripsMenu = new Menu<Context>("admin-trips-menu")
-  .text("Список участников", handlers.listTripMembers).row()
   .text("Добавить поход", handlers.addTripHandler).row()
-  .text("Изменить поход", handlers.editTripHandler).row()
-  .text("Удалить походы", handlers.deleteTripHandler).row()
+  .text("Изменить поход", handlers.editTripMenuHandler).row()
+  .text("Удалить походы", handlers.deleteTripMenuHandler).row()
+  .text("Список участников", handlers.listTripMembers).row()
   .back("<- Назад");
 
 export const postsMenu = new Menu<Context>("admin-posts-menu")

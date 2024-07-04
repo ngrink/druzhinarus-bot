@@ -9,11 +9,11 @@ import { eventsService } from "@/modules/events";
 export async function addEvent(conversation: Conversation<Context>, ctx: Context) {
   await ctx.reply('[Добавление меропрития]')
 
-  await ctx.reply('1/4: *Введите название мероприятия')
+  await ctx.reply('1/4: Введите название мероприятия*')
   const eventTitle = await conversation.form.text()
 
   await ctx.reply(formatMessage`
-    2/4: *Введите дату начала мероприятия
+    2/4: Введите дату начала мероприятия*
   `)
   
   let eventStartDate;
@@ -83,5 +83,5 @@ export async function addEvent(conversation: Conversation<Context>, ctx: Context
     })
   })
 
-  await ctx.reply(formatMessage`Мероприятие добавлено`)
+  await ctx.reply('Мероприятие добавлено')
 }

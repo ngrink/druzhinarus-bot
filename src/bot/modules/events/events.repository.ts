@@ -1,8 +1,13 @@
 import { Event, EventMember, PrismaClient, User } from '@prisma/client'
 import { CreateEventDto, UpdateEventDto } from './dto'
+import { startOfToday } from 'date-fns'
 
 export type UserFlavor = {
   user: User
+}
+
+export type MembersFlavor = {
+  members: (EventMember & UserFlavor)[]
 }
 
 export class EventsRepository {
@@ -42,6 +47,26 @@ export class EventsRepository {
     return events
   }
 
+  async getUpcomingEvents(): Promise<Event[]> {
+    const events = await this.prisma.event.findMany({
+      where: {
+        endDate: {
+          gte: startOfToday()
+        }
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ]
+    })
+
+    return events
+  }
+
   async getCommonEvents(): Promise<Event[]> {
     const events = await this.prisma.event.findMany({
       where: {
@@ -64,6 +89,52 @@ export class EventsRepository {
     const events = await this.prisma.event.findMany({
       where: {
         type: "TRIP"
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ]
+    })
+
+    return events
+  }
+
+  async getTripEventsWithMembers() {
+    const events = await this.prisma.event.findMany({
+      where: {
+        type: "TRIP"
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ],
+      include: {
+        members: {
+          include: {
+            user: true
+          }
+        }
+      }
+    })
+
+    return events
+  }
+
+  async getUpcomingTripsEvents(): Promise<Event[]> {
+    const events = await this.prisma.event.findMany({
+      where: {
+        type: "TRIP",
+        endDate: {
+          gte: startOfToday()
+        }
       },
       orderBy: [
         {
@@ -137,5 +208,18 @@ export class EventsRepository {
     })
 
     return members
+  }
+
+  async getEventMember(eventId: number, userId: number): Promise<EventMember | null> {
+    const member = await this.prisma.eventMember.findUnique({
+      where: {
+        eventId_userId: {
+          eventId,
+          userId
+        }
+      }
+    })
+
+    return member
   }
 }

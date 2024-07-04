@@ -1,7 +1,9 @@
 import { Context as DefaultContext, SessionFlavor, SessionOptions } from 'grammy'
 import { HydrateFlavor } from '@grammyjs/hydrate'
 import { ConversationFlavor } from '@grammyjs/conversations'
+
 import { Event } from '@prisma/client'
+import { MembersFlavor } from '@/modules/events'
 
 export type Context = HydrateFlavor<
   DefaultContext &
@@ -10,25 +12,18 @@ export type Context = HydrateFlavor<
 >
 
 export type SessionData = {
-  state: string,
-  events: Event[],
-
-  editEvent: {
-    currentEventIndex: number,
-    rootMessageId: number,
-    chatId: number | string
+  listTripMembers: {
+    trips: (Event & MembersFlavor)[],
+    currentTrip: number,
   }
 }
 
 export const getInitialSessionData = (): SessionData => {
   return {
-    state: 'start',
-    events: [],
-    editEvent: {
-      currentEventIndex: 0,
-      rootMessageId: 0,
-      chatId: 0
-    }
+    listTripMembers: {
+      trips: [],
+      currentTrip: 0,
+    },
   }
 }
 

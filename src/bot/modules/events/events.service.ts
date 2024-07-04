@@ -1,19 +1,23 @@
 import { Event, EventMember } from "@prisma/client"
 
 import { CreateEventDto, UpdateEventDto } from "./dto"
-import { UserFlavor } from "./events.repository"
+import { MembersFlavor, UserFlavor } from "./events.repository"
 
 type IEventsRepository = {
   createEvent: (data: CreateEventDto) => Promise<Event>
   getEvents: () => Promise<Event[]>
+  getUpcomingEvents: () => Promise<Event[]>
   getCommonEvents: () => Promise<Event[]>
   getTripEvents: () => Promise<Event[]>
+  getTripEventsWithMembers: () => Promise<(Event & MembersFlavor)[]>
+  getUpcomingTripsEvents: () => Promise<Event[]>
   getEvent: (id: number) => Promise<Event | null>
   updateEvent: (id: number, data: UpdateEventDto) => Promise<Event | null>
   deleteEvent: (id: number) => Promise<void>
   signupToEvent(eventId: number, userId: number): Promise<void>
   getAllEventsMembers(): Promise<(EventMember & UserFlavor)[]> 
   getEventMembers(eventId: number): Promise<(EventMember & UserFlavor)[]> 
+  getEventMember(eventId: number, userId: number): Promise<EventMember | null>
 }
 
 export class EventsService {
@@ -35,6 +39,12 @@ export class EventsService {
     return events
   }
 
+  async getUpcomingEvents() {
+    const events = await this.eventsRepository.getUpcomingEvents()
+
+    return events
+  }
+
   async getCommonEvents() {
     const events = await this.eventsRepository.getCommonEvents()
 
@@ -43,6 +53,18 @@ export class EventsService {
 
   async getTripEvents() {
     const events = await this.eventsRepository.getTripEvents()
+
+    return events
+  }
+
+  async getTripEventsWithMembers() {
+    const events = await this.eventsRepository.getTripEventsWithMembers()
+
+    return events
+  }
+
+  async getUpcomingTripsEvents() {
+    const events = await this.eventsRepository.getUpcomingTripsEvents()
 
     return events
   }
@@ -77,5 +99,11 @@ export class EventsService {
     const members = await this.eventsRepository.getEventMembers(eventId)
 
     return members
+  }
+
+  async getEventMember(eventId: number, userId: number) {
+    const member = await this.eventsRepository.getEventMember(eventId, userId)
+
+    return member
   }
 }

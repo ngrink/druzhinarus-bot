@@ -8,43 +8,27 @@ import { usersService } from "@/modules/users";
 import { eventsService } from "@/modules/events";
 
 export async function signupTrip(conversation: Conversation<Context>, ctx: Context) {
-  const user = await usersService.getUser(ctx.from!.id)
-  const trips = await eventsService.getTripEvents()
-  const tripsFormatted = formatEvents(trips, { ids: true })
+  const eventId = Number(ctx.match)
+  const userId = ctx.from!.id
+  const member = await eventsService.getEventMember(eventId, userId)
+  if (member) {
+    await ctx.reply('Вы уже записаны на этот поход')
+    return
+  }
+
+  const user = await usersService.getUser(userId)
 
   let fullname: string;
   let phone: string;
   let birthday: Date;
 
-  if (!trips.length) {
-    await ctx.reply('Нет доступных походов')
-    return
-  }
-
-  await ctx.reply('[Запись в поход]')
-
-  await ctx.reply('1/5: Выберите номер похода')
-  await ctx.reply(tripsFormatted, {
-    parse_mode: 'HTML',
-    // @ts-ignore
-    disable_web_page_preview: true,
-  })
-
-  const number = await conversation.form.int()
-  const event = trips[number-1]
-  const members = await eventsService.getEventMembers(event.id)
-  if (members.some(member => member.userId == user.id)) {
-    await ctx.reply('Вы уже записаны на этот поход')
-    return
-  }
-
   if (!user.fullname) {
-    await ctx.reply('2/5: *Введите ваше ФИО')
+    await ctx.reply('1/4: *Введите ваше ФИО')
     fullname = await conversation.form.text()
   }
 
   if (!user.birthday) {
-    await ctx.reply('3/5: *Дата рождения')
+    await ctx.reply('2/4: *Введите дату рождения')
   
     while (true) {
       try {
@@ -63,7 +47,7 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   }
 
   if (!user.phone) {
-    await ctx.reply('4/5: *Введите ваш номер телефона')
+    await ctx.reply('3/4: *Введите ваш номер телефона')
   
     while (true) {
       phone = await conversation.form.text()
@@ -76,7 +60,7 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   }
 
   if (!user.fullname || !user.phone || !user.birthday) {
-    await ctx.reply('5/5: *Согласен на обработку персональных данных (да)')
+    await ctx.reply('4/4: *Согласен на обработку персональных данных (да)')
     const confirm = await conversation.form.text()
     if (confirm.toLocaleLowerCase() != "да") {
       await ctx.reply('Отмена записи')
@@ -93,13 +77,19 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
       })
     }
 
-    await eventsService.signupToEvent(event.id, user.id)
+    await eventsService.signupToEvent(eventId, userId)
   })
 
   await ctx.reply(formatMessage`
-    Ваша заявка на участие в походе принята. Ознакомьтесь со следующей информацией, чтобы подготовится к походу (<a href="https://vk.com/topic-9577978_34500403">ссылка</a>)
+    Ваша заявка на участие в походе принята. Ознакомьтесь со следующей информацией, чтобы подготовится к походу
   `, {
-    parse_mode: 'HTML',
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: 'Руководство', url: 'https://vk.com/topic-9577978_34500403' },
+        ]
+      ]
+    },
     // @ts-ignore
     disable_web_page_preview: true,
   })

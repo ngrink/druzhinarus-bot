@@ -7,31 +7,28 @@ import { formatEvent, formatMessage, isURL, parseEmpty } from "@/helpers";
 import { eventsService } from "@/modules/events";
 
 export async function editEvent(conversation: Conversation<Context>, ctx: Context) {
-  const events = await eventsService.getCommonEvents();
+  const eventId = Number(ctx.match)
+  const event = await eventsService.getEvent(eventId)
 
-  if (!events.length) {
-    await ctx.reply(formatMessage`Нет доступных мероприятий`)
+  if (!event) {
+    await ctx.reply('Мероприятие не найдено')
     return
   }
 
-  const formattedEvents = events
-    .map((event, i) => `[${i + 1}]\n${formatEvent(event)}`)
-    .join("\n\n")
-
-  await ctx.reply('[Изменение меропрития]\n\n' + formattedEvents, {
+  await ctx.reply(formatMessage`
+    [Изменение меропрития]
+    ${formatEvent(event)}
+  `, {
     parse_mode: "HTML",
     // @ts-ignore
     disable_web_page_preview: true,
   })
 
-  await ctx.reply('1/5: *Введите номер мероприятия для изменения')
-  const eventNumber = await conversation.form.int()
-
-  await ctx.reply('2/5: Введите название мероприятия')
+  await ctx.reply('1/4: Введите новое название мероприятия')
   const eventTitle = parseEmpty(await conversation.form.text())
 
   await ctx.reply(formatMessage`
-    3/5: *Введите дату начала мероприятия
+    2/4: Введите новую дату начала мероприятия
   `)
   
   let eventStartDate;
@@ -61,7 +58,7 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
   }
 
   await ctx.reply(formatMessage`
-    4/5: Введите дату конца мероприятия
+    3/4: Введите новую дату конца мероприятия
   `)
 
   let eventEndDate;
@@ -90,7 +87,7 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
     }
   }
 
-  await ctx.reply('4/4: Добавьте ссылку на подробности')
+  await ctx.reply('4/4: Добавьте новую ссылку на подробности')
   let eventLink = parseEmpty(await conversation.form.text())
 
   while (eventLink && !isURL(eventLink)) {
@@ -99,8 +96,6 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
   }
 
   await conversation.external(async () => {
-    const eventId = events[eventNumber - 1].id
-
     await eventsService.updateEvent(eventId, {
       title: eventTitle,
       startDate: parsedEventStartDate,
@@ -109,5 +104,5 @@ export async function editEvent(conversation: Conversation<Context>, ctx: Contex
     })
   })
 
-  await ctx.reply(formatMessage`Мероприятие изменено`)
+  await ctx.reply("Мероприятие изменено")
 }

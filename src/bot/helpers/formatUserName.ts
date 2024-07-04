@@ -1,7 +1,11 @@
 import { User } from "@prisma/client"
 
-export const formatUserName = (user: User): string => {
-  if (user.username) {
+type formatUserNameOptions = {
+  username: boolean
+}
+
+export const formatUserName = (user: User, options?: formatUserNameOptions): string => {
+  if (options?.username && user.username) {
     return `<a href="tg://user?id=${user.id}">${user.fullname} @${user.username}</a>`
   }
 

@@ -12,3 +12,15 @@ export const onlyAdmin: Middleware<Context> = (ctx: Context, next: NextFunction)
 
   return next()
 }
+
+export const onlyAdminOnDevelopment: Middleware<Context> = (ctx: Context, next: NextFunction) => {
+  if (process.env.NODE_ENV === 'development') {
+    const userId = ctx.from?.id
+    if (!userId || !isAdmin(userId)) {
+      ctx.reply(`Приветствую! Это тестовый чат-бот клуба и используется только разработчиками. Напиши основному боту @druzhinarus_bot`)
+      return
+    }
+  }
+
+  return next()
+}
