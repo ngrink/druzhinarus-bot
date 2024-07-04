@@ -4,37 +4,62 @@ import { Context } from "@/bot/context"
 import { formatEvent, formatMembers, formatMessage } from "@/helpers"
 
 export const tripsMembersMenu = new Menu<Context>("trips-members-menu")
-  .text("<", async (ctx) => {
-    if (!currentTripPrev(ctx)) {
+  .dynamic((ctx) => {
+    const multiple = ctx.session.listTripMembers.trips.length > 1
+    if (!multiple) {
       return
     }
 
-    const trip = ctx.session.listTripMembers.trips[ctx.session.listTripMembers.currentTrip]
-    await ctx.editMessageText(formatMessage`
-      ${formatEvent(trip, { links: true, members: trip.members })}
+    const range = new MenuRange<Context>()
+    
+    range
+      .text("<", async (ctx) => {
+        if (!currentTripPrev(ctx)) {
+          return
+        }
 
-      ${formatMembers(trip.members.map(member => member.user))}
-    `, {
-      reply_markup: tripsMembersMenu,
-      parse_mode: "HTML"
-    })
+        const n = ctx.session.listTripMembers.currentTrip
+        const trips = ctx.session.listTripMembers.trips
+        const trip = trips[n]
+    
+        await ctx.editMessageText(formatMessage`
+          ${multiple ? `[${n+1}/${trips.length}]` : ""}
+          ${formatEvent(trip, { links: true, members: trip.members })}
+    
+          ${formatMembers(trip.members.map(member => member.user))}
+        `, {
+          reply_markup: tripsMembersMenu,
+          parse_mode: "HTML",
+          // @ts-ignore
+          disable_web_page_preview: true,
+        })
+      })
+    
+    range
+      .text(">", async (ctx) => {
+        if (!currentTripNext(ctx)) {
+          return
+        }
+        
+        const n = ctx.session.listTripMembers.currentTrip
+        const trips = ctx.session.listTripMembers.trips
+        const trip = trips[n]
+
+        await ctx.editMessageText(formatMessage`
+          ${multiple ? `[${n+1}/${trips.length}]` : ""}
+          ${formatEvent(trip, { links: true, members: trip.members })}
+    
+          ${formatMembers(trip.members.map(member => member.user))}
+        `, {
+          reply_markup: tripsMembersMenu,
+          parse_mode: "HTML",
+          // @ts-ignore
+          disable_web_page_preview: true,
+        })
+      })
+
+    return range
   })
-  .text(">", async (ctx) => {
-    if (!currentTripNext(ctx)) {
-      return
-    }
-
-    const trip = ctx.session.listTripMembers.trips[ctx.session.listTripMembers.currentTrip]
-    await ctx.editMessageText(formatMessage`
-      ${formatEvent(trip, { links: true, members: trip.members })}
-
-      ${formatMembers(trip.members.map(member => member.user))}
-    `, {
-      reply_markup: tripsMembersMenu,
-      parse_mode: "HTML"
-    })
-  })
-
 
 const currentTripPrev = (ctx: Context) => {
   if (ctx.session.listTripMembers.currentTrip == 0) {
