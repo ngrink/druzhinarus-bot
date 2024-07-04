@@ -9,14 +9,18 @@ export const tripsMembersMenu = new Menu<Context>("trips-members-menu")
       return
     }
 
-    const trip = ctx.session.listTripMembers.trips[ctx.session.listTripMembers.currentTrip]
+    const n = ctx.session.listTripMembers.currentTrip
+    const trip = ctx.session.listTripMembers.trips[n]
+
     await ctx.editMessageText(formatMessage`
       ${formatEvent(trip, { links: true, members: trip.members })}
 
       ${formatMembers(trip.members.map(member => member.user))}
     `, {
       reply_markup: tripsMembersMenu,
-      parse_mode: "HTML"
+      parse_mode: "HTML",
+      // @ts-ignore
+      disable_web_page_preview: true,
     })
   })
   .text(">", async (ctx) => {
@@ -24,14 +28,18 @@ export const tripsMembersMenu = new Menu<Context>("trips-members-menu")
       return
     }
 
-    const trip = ctx.session.listTripMembers.trips[ctx.session.listTripMembers.currentTrip]
+    const n = ctx.session.listTripMembers.currentTrip
+    const trip = ctx.session.listTripMembers.trips[n]
+    
     await ctx.editMessageText(formatMessage`
       ${formatEvent(trip, { links: true, members: trip.members })}
 
       ${formatMembers(trip.members.map(member => member.user))}
     `, {
       reply_markup: tripsMembersMenu,
-      parse_mode: "HTML"
+      parse_mode: "HTML",
+      // @ts-ignore
+      disable_web_page_preview: true,
     })
   })
 
