@@ -9,7 +9,7 @@ import * as builders from '@/conversations';
 import { Context, sessionOptions } from '@/bot/context';
 import { onlyAdminOnDevelopment } from '@/middlewares';
 import { errorHandler } from '@/bot/error';
-import { deleteEventMenu, deleteTripMenu, editEventMenu, editTripMenu, mainMenu, signupTripsMenu } from '@/menu';
+import { deleteEventMenu, deleteTripMenu, editEventMenu, editTripMenu, mainMenu, signupTripsMenu, tripsMembersMenu } from '@/menu';
 
 if (!process.env.BOT_TOKEN) {
   throw new Error("Bot token is not defined");
@@ -38,13 +38,13 @@ bot.use(createConversation(builders.addTrip))
 bot.use(createConversation(builders.editTrip))
 bot.use(createConversation(builders.deleteTrip))
 bot.use(createConversation(builders.signupTrip))
-bot.use(createConversation(builders.listTripMembers))
 
 bot.use(editEventMenu)
 bot.use(deleteEventMenu)
 bot.use(editTripMenu)
 bot.use(deleteTripMenu)
 bot.use(signupTripsMenu)
+bot.use(tripsMembersMenu)
 bot.use(mainMenu);
 
 bot.command("start", commands.startCommand);

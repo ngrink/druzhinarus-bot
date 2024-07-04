@@ -5,7 +5,8 @@ import { formatEvent } from "@/helpers";
 import { eventsService } from "@/modules/events";
 
 export const upcomingEventsHandler: Middleware<Context> = async (ctx: Context) => {
-  const events = await eventsService.getUpcomingEvents()
+  const events = (await eventsService.getUpcomingEvents())
+
   const formattedEvents = events
     .map(event => formatEvent(event, {links: true}))
     .join('\n\n')

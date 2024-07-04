@@ -3,6 +3,7 @@ import { ru } from "date-fns/locale"
 
 import { Event, EventMember } from "@prisma/client"
 import { formatMessage, getWordWithEnding, isURL } from "@/bot/helpers"
+import { MembersFlavor } from "@/modules/events"
 
 type formatEventsOptions = {
   enumerate?: boolean,
@@ -22,7 +23,7 @@ export const formatEvents = (events: Event[], options?: formatEventsOptions): st
 
 export const formatEvent = (event: Event, options?: formatEventOptions): string => {
   const hasLink = event.link ? isURL(event.link) : false
-  const members = options?.members?.filter((member) => member.eventId === event.id) || []
+  const members = options?.members || []
   const membersLabel = ` (${members.length} ${getWordWithEnding(members.length, 'участник', ['', 'а', 'ов'])}) `
 
   return formatMessage`

@@ -1,7 +1,7 @@
 import { Event, EventMember } from "@prisma/client"
 
 import { CreateEventDto, UpdateEventDto } from "./dto"
-import { UserFlavor } from "./events.repository"
+import { MembersFlavor, UserFlavor } from "./events.repository"
 
 type IEventsRepository = {
   createEvent: (data: CreateEventDto) => Promise<Event>
@@ -9,6 +9,7 @@ type IEventsRepository = {
   getUpcomingEvents: () => Promise<Event[]>
   getCommonEvents: () => Promise<Event[]>
   getTripEvents: () => Promise<Event[]>
+  getTripEventsWithMembers: () => Promise<(Event & MembersFlavor)[]>
   getUpcomingTripsEvents: () => Promise<Event[]>
   getEvent: (id: number) => Promise<Event | null>
   updateEvent: (id: number, data: UpdateEventDto) => Promise<Event | null>
@@ -52,6 +53,12 @@ export class EventsService {
 
   async getTripEvents() {
     const events = await this.eventsRepository.getTripEvents()
+
+    return events
+  }
+
+  async getTripEventsWithMembers() {
+    const events = await this.eventsRepository.getTripEventsWithMembers()
 
     return events
   }

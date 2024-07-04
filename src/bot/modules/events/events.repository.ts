@@ -6,6 +6,10 @@ export type UserFlavor = {
   user: User
 }
 
+export type MembersFlavor = {
+  members: (EventMember & UserFlavor)[]
+}
+
 export class EventsRepository {
   prisma: PrismaClient
 
@@ -94,6 +98,31 @@ export class EventsRepository {
           endDate: 'asc'
         }
       ]
+    })
+
+    return events
+  }
+
+  async getTripEventsWithMembers() {
+    const events = await this.prisma.event.findMany({
+      where: {
+        type: "TRIP"
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ],
+      include: {
+        members: {
+          include: {
+            user: true
+          }
+        }
+      }
     })
 
     return events
