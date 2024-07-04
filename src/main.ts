@@ -8,6 +8,7 @@ import * as commands from '@/commands';
 import * as builders from '@/conversations';
 import { mainMenu, signupTripsMenu } from '@/menu';
 import { Context, sessionOptions } from '@/bot/context';
+import { onlyAdminOnDevelopment } from '@/middlewares';
 import { errorHandler } from '@/bot/error';
 
 if (!process.env.BOT_TOKEN) {
@@ -17,6 +18,7 @@ if (!process.env.BOT_TOKEN) {
 const bot = new Bot<Context>(process.env.BOT_TOKEN);
 commands.setCommands(bot)
 
+bot.use(onlyAdminOnDevelopment)
 bot.use(hydrate())
 bot.use(session(sessionOptions))
 bot.use(conversations());
