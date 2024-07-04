@@ -1,5 +1,5 @@
 import { User } from "@prisma/client"
-import { formatMessage, formatUserName } from "@/bot/helpers"
+import { formatMessage, formatUserName, getAge, getAgeEnding } from "@/bot/helpers"
 import { formatInTimeZone } from "date-fns-tz"
 
 type formatMembersOptions = {}
@@ -11,10 +11,13 @@ export const formatMembers = (members: User[], options?: formatMembersOptions): 
 }
 
 export const formatMember = (member: User, options?: formatMemberOptions) => {
+  const { phone, birthday } = member;
+  const age = birthday && getAge(birthday)
+
   return formatMessage`
     ${formatUserName(member)}
-    ${member.phone}
-    ${member.birthday ? formatInTimeZone(member.birthday, 'Europe/Moscow', 'dd.MM.yyyy') : ''}
+    ${phone}
+    ${age ? `${formatInTimeZone(birthday, 'Europe/Moscow', 'dd.MM.yyyy')} (${age} ${getAgeEnding(age)})` : ''}
   `
 }
 
