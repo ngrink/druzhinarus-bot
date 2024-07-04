@@ -44,7 +44,7 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   }
 
   if (!user.birthday) {
-    await ctx.reply('3/5: *Дата рождения')
+    await ctx.reply('3/5: *Введите дату рождения')
   
     while (true) {
       try {
@@ -97,9 +97,15 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   })
 
   await ctx.reply(formatMessage`
-    Ваша заявка на участие в походе принята. Ознакомьтесь со следующей информацией, чтобы подготовится к походу (<a href="https://vk.com/topic-9577978_34500403">ссылка</a>)
+    Ваша заявка на участие в походе принята. Ознакомьтесь со следующей информацией, чтобы подготовится к походу
   `, {
-    parse_mode: 'HTML',
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: 'Руководство', url: 'https://vk.com/topic-9577978_34500403' },
+        ]
+      ]
+    },
     // @ts-ignore
     disable_web_page_preview: true,
   })
