@@ -9,27 +9,10 @@ export type Context = HydrateFlavor<
   ConversationFlavor
 >
 
-export type SessionData = {
-  state: string,
-  events: Event[],
-
-  editEvent: {
-    currentEventIndex: number,
-    rootMessageId: number,
-    chatId: number | string
-  }
-}
+export type SessionData = {}
 
 export const getInitialSessionData = (): SessionData => {
-  return {
-    state: 'start',
-    events: [],
-    editEvent: {
-      currentEventIndex: 0,
-      rootMessageId: 0,
-      chatId: 0
-    }
-  }
+  return {}
 }
 
 export const sessionOptions: SessionOptions<SessionData, Context> = {
