@@ -6,6 +6,7 @@ import { UserFlavor } from "./events.repository"
 type IEventsRepository = {
   createEvent: (data: CreateEventDto) => Promise<Event>
   getEvents: () => Promise<Event[]>
+  getUpcomingEvents: () => Promise<Event[]>
   getCommonEvents: () => Promise<Event[]>
   getTripEvents: () => Promise<Event[]>
   getEvent: (id: number) => Promise<Event | null>
@@ -31,6 +32,12 @@ export class EventsService {
   
   async getEvents() {
     const events = await this.eventsRepository.getEvents()
+
+    return events
+  }
+
+  async getUpcomingEvents() {
+    const events = await this.eventsRepository.getUpcomingEvents()
 
     return events
   }

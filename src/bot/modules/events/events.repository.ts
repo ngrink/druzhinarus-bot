@@ -1,5 +1,6 @@
 import { Event, EventMember, PrismaClient, User } from '@prisma/client'
 import { CreateEventDto, UpdateEventDto } from './dto'
+import { startOfToday } from 'date-fns'
 
 export type UserFlavor = {
   user: User
@@ -29,6 +30,26 @@ export class EventsRepository {
   
   async getEvents(): Promise<Event[]> {
     const events = await this.prisma.event.findMany({
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ]
+    })
+
+    return events
+  }
+
+  async getUpcomingEvents(): Promise<Event[]> {
+    const events = await this.prisma.event.findMany({
+      where: {
+        endDate: {
+          gte: startOfToday()
+        }
+      },
       orderBy: [
         {
           startDate: 'asc'
