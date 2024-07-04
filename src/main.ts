@@ -6,10 +6,10 @@ import { conversations, createConversation } from '@grammyjs/conversations';
 
 import * as commands from '@/commands';
 import * as builders from '@/conversations';
-import { mainMenu, signupTripsMenu } from '@/menu';
 import { Context, sessionOptions } from '@/bot/context';
 import { onlyAdminOnDevelopment } from '@/middlewares';
 import { errorHandler } from '@/bot/error';
+import { deleteEventMenu, deleteTripMenu, editEventMenu, editTripMenu, mainMenu, signupTripsMenu } from '@/menu';
 
 if (!process.env.BOT_TOKEN) {
   throw new Error("Bot token is not defined");
@@ -40,6 +40,10 @@ bot.use(createConversation(builders.deleteTrip))
 bot.use(createConversation(builders.signupTrip))
 bot.use(createConversation(builders.listTripMembers))
 
+bot.use(editEventMenu)
+bot.use(deleteEventMenu)
+bot.use(editTripMenu)
+bot.use(deleteTripMenu)
 bot.use(signupTripsMenu)
 bot.use(mainMenu);
 

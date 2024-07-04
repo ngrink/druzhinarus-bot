@@ -1,2 +1,6 @@
 export * from './main'
 export * from './signupTrip'
+export * from './editEvent'
+export * from './deleteEvent'
+export * from './editTrip'
+export * from './deleteTrip'

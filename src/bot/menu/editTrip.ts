@@ -3,12 +3,11 @@ import { Menu, MenuRange } from "@grammyjs/menu"
 import { eventsService } from "@/modules/events"
 
 import { Context } from "@/bot/context"
-import { signupTripHandler } from "@/handlers"
 import { formatDateRange } from "@/helpers"
 
-export const signupTripsMenu = new Menu<Context>("signup-trips-menu")
+export const editTripMenu = new Menu<Context>("edit-trip-menu")
   .dynamic(async () => {
-    const trips = await eventsService.getUpcomingTripsEvents()
+    const trips = await eventsService.getTripEvents()
     const range = new MenuRange<Context>()
     
     for (const trip of trips) {
@@ -19,7 +18,9 @@ export const signupTripsMenu = new Menu<Context>("signup-trips-menu")
             text: `[${formatDateRange(startDate, endDate)}] ${title}`,
             payload: String(trip.id)
           }, 
-          signupTripHandler
+          async (ctx) => {
+            await ctx.conversation.enter("editTrip")           
+          }
         )
        .row()
     }

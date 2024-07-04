@@ -1,10 +1,8 @@
-import { Menu, MenuRange } from "@grammyjs/menu";
+import { Menu } from "@grammyjs/menu";
 
 import * as handlers from "@/handlers";
 import { onlyAdmin } from "@/middlewares";
 import { Context } from "@/bot/context";
-import { eventsService } from "@/modules/events";
-import { formatEvent } from "@/helpers";
 
 export const mainMenu = new Menu<Context>("main-menu")
   .text("Ближайшие мероприятия", handlers.upcomingEventsHandler).row()
@@ -20,15 +18,15 @@ export const administrationMenu = new Menu<Context>("admin-menu")
 
 export const eventsMenu = new Menu<Context>("admin-events-menu")
   .text("Добавить мероприятие", handlers.addEventHandler).row()
-  .text("Изменить мероприятие", handlers.editEventHandler).row()
-  .text("Удалить мероприятия", handlers.deleteEventHandler).row()
+  .text("Изменить мероприятие", handlers.editEventMenuHandler).row()
+  .text("Удалить мероприятия", handlers.deleteEventMenuHandler).row()
   .back("<- Назад");
 
 export const tripsMenu = new Menu<Context>("admin-trips-menu")
   .text("Список участников", handlers.listTripMembers).row()
   .text("Добавить поход", handlers.addTripHandler).row()
-  .text("Изменить поход", handlers.editTripHandler).row()
-  .text("Удалить походы", handlers.deleteTripHandler).row()
+  .text("Изменить поход", handlers.editTripMenuHandler).row()
+  .text("Удалить походы", handlers.deleteTripMenuHandler).row()
   .back("<- Назад");
 
 export const postsMenu = new Menu<Context>("admin-posts-menu")

@@ -41,8 +41,8 @@ model Event {
 model EventMember {
   eventId Int
   userId  Int
-  event   Event @relation(fields: [eventId], references: [id])
-  user    User  @relation(fields: [userId], references: [id])
+  event   Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([eventId, userId])
   @@map("events_members")

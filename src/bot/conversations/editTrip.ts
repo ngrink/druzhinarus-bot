@@ -7,31 +7,28 @@ import { formatEvent, formatMessage, isURL, parseEmpty } from "@/helpers";
 import { eventsService } from "@/modules/events";
 
 export async function editTrip(conversation: Conversation<Context>, ctx: Context) {
-  const events = await eventsService.getTripEvents();
-
-  if (!events.length) {
-    await ctx.reply(formatMessage`Нет доступных походов`)
+  const eventId = Number(ctx.match)
+  const event = await eventsService.getEvent(eventId)
+  
+  if (!event) {
+    await ctx.reply('Поход не найден')
     return
   }
-
-  const formattedEvents = events
-    .map((event, i) => `[${i + 1}]\n${formatEvent(event)}`)
-    .join("\n\n")
-
-  await ctx.reply('[Изменение похода]\n\n' + formattedEvents, {
+  
+  await ctx.reply(formatMessage`
+    [Изменение похода]
+    ${formatEvent(event)}
+  `, {
     parse_mode: "HTML",
     // @ts-ignore
     disable_web_page_preview: true,
   })
 
-  await ctx.reply('1/5: *Введите номер похода для изменения')
-  const eventNumber = await conversation.form.int()
-
-  await ctx.reply('2/5: Введите название похода')
+  await ctx.reply('1/4: Введите новое название похода')
   const eventTitle = parseEmpty(await conversation.form.text())
 
   await ctx.reply(formatMessage`
-    3/5: *Введите дату начала похода
+    2/4: *Введите новую дату начала похода
   `)
   
   let eventStartDate;
@@ -61,7 +58,7 @@ export async function editTrip(conversation: Conversation<Context>, ctx: Context
   }
 
   await ctx.reply(formatMessage`
-    4/5: Введите дату конца похода
+    3/4: Введите новую дату конца похода
   `)
 
   let eventEndDate;
@@ -90,7 +87,7 @@ export async function editTrip(conversation: Conversation<Context>, ctx: Context
     }
   }
 
-  await ctx.reply('4/4: Добавьте ссылку на подробности')
+  await ctx.reply('4/4: Добавьте новую ссылку на подробности')
   let eventLink = parseEmpty(await conversation.form.text())
 
   while (eventLink && !isURL(eventLink)) {
@@ -99,8 +96,6 @@ export async function editTrip(conversation: Conversation<Context>, ctx: Context
   }
 
   await conversation.external(async () => {
-    const eventId = events[eventNumber - 1].id
-
     await eventsService.updateEvent(eventId, {
       title: eventTitle,
       startDate: parsedEventStartDate,
