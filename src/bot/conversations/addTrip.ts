@@ -9,11 +9,11 @@ import { eventsService } from "@/modules/events";
 export async function addTrip(conversation: Conversation<Context>, ctx: Context) {
   await ctx.reply('[Добавление похода]')
 
-  await ctx.reply('1/4: *Введите название/описание похода')
+  await ctx.reply('1/4: Введите название/описание похода*')
   const eventTitle = await conversation.form.text()
 
   await ctx.reply(formatMessage`
-    2/4: *Введите дату начала похода
+    2/4: Введите дату начала похода*
   `)
   
   let eventStartDate;

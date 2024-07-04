@@ -11,7 +11,7 @@ export const signupTripMenuHandler: Middleware<Context> = async (ctx: Context) =
     return
   }
 
-  await ctx.reply('Выберите поход', {
+  await ctx.reply('Выберите поход для записи', {
     reply_markup: signupTripsMenu
   })
 }
