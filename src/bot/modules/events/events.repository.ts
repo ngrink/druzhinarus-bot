@@ -99,6 +99,27 @@ export class EventsRepository {
     return events
   }
 
+  async getUpcomingTripsEvents(): Promise<Event[]> {
+    const events = await this.prisma.event.findMany({
+      where: {
+        type: "TRIP",
+        endDate: {
+          gte: startOfToday()
+        }
+      },
+      orderBy: [
+        {
+          startDate: 'asc'
+        },
+        {
+          endDate: 'asc'
+        }
+      ]
+    })
+
+    return events
+  }
+
   async getEvent(id: number): Promise<Event | null> {
     const event = await this.prisma.event.findUnique({
       where: {
@@ -158,5 +179,18 @@ export class EventsRepository {
     })
 
     return members
+  }
+
+  async getEventMember(eventId: number, userId: number): Promise<EventMember | null> {
+    const member = await this.prisma.eventMember.findUnique({
+      where: {
+        eventId_userId: {
+          eventId,
+          userId
+        }
+      }
+    })
+
+    return member
   }
 }

@@ -6,7 +6,7 @@ import { conversations, createConversation } from '@grammyjs/conversations';
 
 import * as commands from '@/commands';
 import * as builders from '@/conversations';
-import { mainMenu } from '@/menu';
+import { mainMenu, signupTripsMenu } from '@/menu';
 import { Context, sessionOptions } from '@/bot/context';
 import { errorHandler } from '@/bot/error';
 
@@ -38,6 +38,7 @@ bot.use(createConversation(builders.deleteTrip))
 bot.use(createConversation(builders.signupTrip))
 bot.use(createConversation(builders.listTripMembers))
 
+bot.use(signupTripsMenu)
 bot.use(mainMenu);
 
 bot.command("start", commands.startCommand);

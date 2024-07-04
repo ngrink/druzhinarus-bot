@@ -10,7 +10,7 @@ import { eventsService } from "@/modules/events";
 export async function listTripMembers(conversation: Conversation<Context>, ctx: Context) {
   const trips = await eventsService.getTripEvents()
   const members = await eventsService.getAllEventsMembers()
-  const tripsFormatted = formatEvents(trips, { ids: true, members })
+  const tripsFormatted = formatEvents(trips, { enumerate: true, members })
 
   if (!members.length) {
     await ctx.reply('Нет участников')

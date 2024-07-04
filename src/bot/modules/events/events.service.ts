@@ -9,12 +9,14 @@ type IEventsRepository = {
   getUpcomingEvents: () => Promise<Event[]>
   getCommonEvents: () => Promise<Event[]>
   getTripEvents: () => Promise<Event[]>
+  getUpcomingTripsEvents: () => Promise<Event[]>
   getEvent: (id: number) => Promise<Event | null>
   updateEvent: (id: number, data: UpdateEventDto) => Promise<Event | null>
   deleteEvent: (id: number) => Promise<void>
   signupToEvent(eventId: number, userId: number): Promise<void>
   getAllEventsMembers(): Promise<(EventMember & UserFlavor)[]> 
   getEventMembers(eventId: number): Promise<(EventMember & UserFlavor)[]> 
+  getEventMember(eventId: number, userId: number): Promise<EventMember | null>
 }
 
 export class EventsService {
@@ -54,6 +56,12 @@ export class EventsService {
     return events
   }
 
+  async getUpcomingTripsEvents() {
+    const events = await this.eventsRepository.getUpcomingTripsEvents()
+
+    return events
+  }
+
   async getEvent(id: number) {
     const event = await this.eventsRepository.getEvent(id)
 
@@ -84,5 +92,11 @@ export class EventsService {
     const members = await this.eventsRepository.getEventMembers(eventId)
 
     return members
+  }
+
+  async getEventMember(eventId: number, userId: number) {
+    const member = await this.eventsRepository.getEventMember(eventId, userId)
+
+    return member
   }
 }

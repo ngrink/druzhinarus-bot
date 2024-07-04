@@ -1,12 +1,14 @@
-import { Menu } from "@grammyjs/menu";
+import { Menu, MenuRange } from "@grammyjs/menu";
 
 import * as handlers from "@/handlers";
 import { onlyAdmin } from "@/middlewares";
 import { Context } from "@/bot/context";
+import { eventsService } from "@/modules/events";
+import { formatEvent } from "@/helpers";
 
 export const mainMenu = new Menu<Context>("main-menu")
   .text("Ближайшие мероприятия", handlers.upcomingEventsHandler).row()
-  .text("Записаться в поход", handlers.signupTripHandler).row()
+  .text("Записаться в поход", handlers.signupTripMenuHandler).row()
   .text("Часто задаваемые вопросы", handlers.faqHandler).row()
   .submenu("Администрирование", "admin-menu", onlyAdmin)
 
