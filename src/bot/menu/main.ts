@@ -3,11 +3,13 @@ import { Menu, MenuRange } from "@grammyjs/menu";
 import * as handlers from "@/handlers";
 import { onlyAdmin } from "@/middlewares";
 import { Context } from "@/bot/context";
-import { isAdmin, isPrivate, isPrivateMessageMiddleware } from "@/filters";
+import { createPrivateMiddleware, isAdmin, isPrivate } from "@/filters";
 
 export const mainMenu = new Menu<Context>("main-menu")
   .text("Ближайшие мероприятия", handlers.upcomingEventsHandler).row()
-  .text("Записаться в поход", isPrivateMessageMiddleware, handlers.signupTripMenuHandler).row()
+  .text("Записаться в поход", 
+    createPrivateMiddleware("Запись доступна в личных сообщениях бота"), 
+    handlers.signupTripMenuHandler).row()
   .text("Часто задаваемые вопросы", handlers.faqHandler).row()
   
   .dynamic((ctx) => {

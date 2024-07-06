@@ -9,7 +9,7 @@ export const isPrivate = (type?: string) => {
   return false
 }
 
-export const isPrivateMiddleware = (ctx: Context, next: NextFunction) => {
+export const privateMiddleware = (ctx: Context, next: NextFunction) => {
   if (isPrivate(ctx.chat?.type)) {
     return next()
   }
@@ -17,11 +17,13 @@ export const isPrivateMiddleware = (ctx: Context, next: NextFunction) => {
   return
 }
 
-export const isPrivateMessageMiddleware = (ctx: Context, next: NextFunction) => {
-  if (isPrivate(ctx.chat?.type)) {
-    return next()
+export const createPrivateMiddleware = (message: string) => {
+  return (ctx: Context, next: NextFunction) => {
+    if (isPrivate(ctx.chat?.type)) {
+      return next()
+    }
+  
+    ctx.reply(`${message} @druzhinarus_bot`)
+    return
   }
-
-  ctx.reply('Доступно в личных сообщениях @druzhinarus_bot')
-  return
 }
