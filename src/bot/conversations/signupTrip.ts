@@ -1,22 +1,23 @@
 import { Conversation } from "@grammyjs/conversations";
 import { parse } from "date-fns";
-import { ru } from "date-fns/locale";
 
 import { Context } from "@/bot/context";
-import { formatEvents, formatMessage } from "@/helpers";
+import { formatMember, formatMessage, sendNotifications } from "@/helpers";
 import { usersService } from "@/modules/users";
 import { eventsService } from "@/modules/events";
 
 export async function signupTrip(conversation: Conversation<Context>, ctx: Context) {
   const eventId = Number(ctx.match)
   const userId = ctx.from!.id
+
+  const event = await eventsService.getEvent(eventId)
   const member = await eventsService.getEventMember(eventId, userId)
   if (member) {
     await ctx.reply('Вы уже записаны на этот поход')
     return
   }
 
-  const user = await usersService.getUser(userId)
+  let user = await usersService.getUser(userId)
 
   let fullname: string;
   let phone: string;
@@ -70,7 +71,7 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   
   await conversation.external(async () => {
     if (fullname || birthday || phone) {
-      await usersService.updateUser(user.id, {
+      user = await usersService.updateUser(user.id, {
         fullname: fullname, 
         phone: phone,
         birthday: birthday,
@@ -78,6 +79,11 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
     }
 
     await eventsService.signupToEvent(eventId, userId)
+    await sendNotifications(ctx, formatMessage`
+      Новый участник похода "${event?.title}"
+
+      ${formatMember(user)}
+    `)
   })
 
   await ctx.reply(formatMessage`
