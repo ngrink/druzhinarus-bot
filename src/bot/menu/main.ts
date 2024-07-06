@@ -2,17 +2,17 @@ import { Menu, MenuRange } from "@grammyjs/menu";
 
 import * as handlers from "@/handlers";
 import { onlyAdmin } from "@/middlewares";
-import { isAdmin } from "@/filters";
 import { Context } from "@/bot/context";
+import { isAdmin, isPrivate, isPrivateMessageMiddleware } from "@/filters";
 
 export const mainMenu = new Menu<Context>("main-menu")
   .text("Ближайшие мероприятия", handlers.upcomingEventsHandler).row()
-  .text("Записаться в поход", handlers.signupTripMenuHandler).row()
+  .text("Записаться в поход", isPrivateMessageMiddleware, handlers.signupTripMenuHandler).row()
   .text("Часто задаваемые вопросы", handlers.faqHandler).row()
   
   .dynamic((ctx) => {
     const range = new MenuRange<Context>();
-    if (isAdmin(ctx.from!.id)) {
+    if (isPrivate(ctx.chat?.type) && isAdmin(ctx.from!.id)) {
       range.submenu("Администрирование", "admin-menu", onlyAdmin)
     }
     return range
