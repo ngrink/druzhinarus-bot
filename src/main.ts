@@ -53,7 +53,9 @@ async function main() {
   bot.command('id', commands.getIdCommand);
 
   bot.on("message", (ctx) => {
-    ctx.reply("Команда не распознана")
+    if (ctx.message.text) {
+      ctx.reply("Команда не распознана")
+    }
   })
 
   bot.catch(errorHandler)
