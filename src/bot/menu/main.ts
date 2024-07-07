@@ -40,8 +40,8 @@ export const tripsMenu = new Menu<Context>("admin-trips-menu")
   .back("<- Назад");
 
 export const postsMenu = new Menu<Context>("admin-posts-menu")
-  .text("Запланировать посты", (ctx) => ctx.reply("7")).row()
-  .text("Очистить запланированные посты", (ctx) => ctx.reply("8")).row()
+  .text("Очередь фотографий", handlers.showPhotosQueue).row()
+  .text("Очистить очередь", handlers.clearPhotosQueue).row()
   .back("<- Назад");
 
 administrationMenu.register(eventsMenu)
