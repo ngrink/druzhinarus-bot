@@ -9,6 +9,14 @@ export const isPrivate = (type?: string) => {
   return false
 }
 
+export const privateFilter = (ctx: Context) => {
+  if (isPrivate(ctx.chat?.type)) {
+    return true
+  }
+
+  return false
+}
+
 export const privateMiddleware = (ctx: Context, next: NextFunction) => {
   if (isPrivate(ctx.chat?.type)) {
     return next()
