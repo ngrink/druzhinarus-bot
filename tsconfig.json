@@ -119,6 +119,7 @@
       "@/middlewares": ["./bot/middlewares"],
       "@/modules": ["./bot/modules"],
       "@/modules/*": ["./bot/modules/*"],
+      "@/scheduler": ["./bot/scheduler"],
       "@/*": ["./*"],
     },
     "outDir": "dist"

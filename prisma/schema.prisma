@@ -56,6 +56,15 @@ model Question {
   @@map("questions")
 }
 
+model Photo {
+  id      Int     @id @default(autoincrement())
+  fileId  String
+  groupId String?
+  isUsed  Boolean @default(false)
+
+  @@map("photos")
+}
+
 model Quote {
   id     Int     @id @default(autoincrement())
   text   String
