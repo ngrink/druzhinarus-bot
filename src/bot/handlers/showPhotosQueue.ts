@@ -2,7 +2,7 @@ import { Middleware } from "grammy";
 
 import { Context } from "@/bot/context";
 import { photosService } from "@/modules/photos";
-import { chunkArray, getWordWithEnding } from "@/helpers";
+import { chunkArray } from "@/helpers";
 
 
 export const showPhotosQueue: Middleware<Context> = async (ctx: Context) => {
@@ -12,19 +12,15 @@ export const showPhotosQueue: Middleware<Context> = async (ctx: Context) => {
     return
   }
 
-  const n = photos.length
   const groups = chunkArray(photos, 10)
   
-  await Promise.allSettled(
-    groups.map(group => {
-      return ctx.replyWithMediaGroup(
-        group.map(photo => ({
-          media: photo.fileId,
-          type: "photo"
-        })),
-      )
-    })
-  )
-
-  await ctx.reply(`В очереди ${n} ${getWordWithEnding(n, 'фотограф', ['ия', 'ии', 'ий'])}`)
+  groups.map(async (group, gidx) => {
+    await ctx.replyWithMediaGroup(
+      group.map((photo, pidx) => ({
+        media: photo.fileId,
+        type: "photo", 
+        caption: pidx == 0 ? `${gidx * 10 + 1}-${gidx * 10 + group.length}`: undefined
+      })),
+    )
+  })
 }
