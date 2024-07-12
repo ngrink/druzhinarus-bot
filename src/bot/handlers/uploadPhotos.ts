@@ -17,7 +17,9 @@ export const uploadPhotosHandler: Middleware<Context> = async (ctx: Context) => 
     const data = [{fileId: photo.file_id}]
   
     await photosService.createPhotos(data)
-    ctx.reply("Фотографии загружены")
+    
+    const count = await photosService.countUnusedPhotos()
+    ctx.reply(`Фотографии загружены: в очереди ${count} фотографий`)
   } else {
     // Multiple photos
     const groupId = ctx.message.media_group_id
@@ -29,7 +31,9 @@ export const uploadPhotosHandler: Middleware<Context> = async (ctx: Context) => 
           fileId: fileId,
           groupId: groupId
         })))
-        ctx.reply("Фотографии загружены")
+
+        const count = await photosService.countUnusedPhotos()
+        ctx.reply(`Фотографии загружены: в очереди ${count} фотографий`)
       }, 1000)
     }
 

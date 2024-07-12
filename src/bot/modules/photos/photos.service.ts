@@ -5,8 +5,11 @@ type IPhotosRepository = {
   createPhotos: (data: CreatePhotoDto[]) => void
   getPhotos: () => Promise<Photo[]>
   getPhoto: (id: number) => Promise<Photo | null>
+  getUnusedPhotos: () => Promise<Photo[]>
   getNextUnusedPhoto: () => Promise<Photo | null>
+  countUnusedPhotos: () => Promise<number>
   updatePhoto: (id: number, data: UpdatePhotoDto) => Promise<Photo | null>
+  deleteAllPhotos: () => Promise<void>
 }
 
 export class PhotosService {
@@ -34,15 +37,31 @@ export class PhotosService {
     return photo
   }
 
+  async getUnusedPhotos(): Promise<Photo[]> {
+    const photos = await this.photosRepository.getUnusedPhotos()
+
+    return photos
+  }
+
   async getNextUnusedPhoto() {
     const photo = await this.photosRepository.getNextUnusedPhoto()
 
     return photo
   }
 
+  async countUnusedPhotos() {
+    const count = await this.photosRepository.countUnusedPhotos()
+
+    return count
+  }
+
   async updatePhoto(id: number, data: UpdatePhotoDto) {
     const photo = await this.photosRepository.updatePhoto(id, data)
 
     return photo
+  }
+
+  async deleteAllPhotos() {
+    await this.photosRepository.deleteAllPhotos()
   }
 }

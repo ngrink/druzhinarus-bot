@@ -33,6 +33,19 @@ export class PhotosRepository {
     return photo
   }
 
+  async getUnusedPhotos(): Promise<Photo[]> {
+    const photos = await this.prisma.photo.findMany({
+      where: {
+        isUsed: false
+      },
+      orderBy: {
+        id: 'asc'
+      }
+    })
+
+    return photos
+  }
+
   async getNextUnusedPhoto(): Promise<Photo | null> {
     const photo = await this.prisma.photo.findFirst({
       where: {
@@ -41,6 +54,17 @@ export class PhotosRepository {
     })
 
     return photo
+  }
+
+
+  async countUnusedPhotos(): Promise<number> {
+    const count = await this.prisma.photo.count({
+      where: {
+        isUsed: false
+      }
+    })
+
+    return count
   }
 
   async updatePhoto(id: number, data: Partial<Photo>): Promise<Photo | null> {
@@ -52,5 +76,9 @@ export class PhotosRepository {
     })
 
     return photo
+  }
+
+  async deleteAllPhotos(): Promise<void> {
+    await this.prisma.photo.deleteMany()
   }
 }
