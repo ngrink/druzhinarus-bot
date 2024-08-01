@@ -24,6 +24,7 @@ export const administrationMenu = new Menu<Context>("admin-menu")
   .submenu("Мероприятия", "admin-events-menu").row()
   .submenu("Походы", "admin-trips-menu").row()
   .submenu("Посты", "admin-posts-menu").row()
+  .submenu("Пользователи", "admin-users-menu").row()
   .back("<- Назад");
 
 export const eventsMenu = new Menu<Context>("admin-events-menu")
@@ -44,7 +45,11 @@ export const postsMenu = new Menu<Context>("admin-posts-menu")
   .text("Очистить очередь", handlers.clearPhotosQueue).row()
   .back("<- Назад");
 
+export const usersMenu = new Menu<Context>("admin-users-menu")
+  .back("<- Назад");
+
 administrationMenu.register(eventsMenu)
 administrationMenu.register(tripsMenu)
 administrationMenu.register(postsMenu)
+administrationMenu.register(usersMenu)
 mainMenu.register(administrationMenu)
