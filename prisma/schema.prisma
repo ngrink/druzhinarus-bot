@@ -12,12 +12,20 @@ enum EventType {
   TRIP
 }
 
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+  USER
+}
+
 model User {
   id       Int       @id
   username String?   @unique
   fullname String?
   phone    String?
   birthday DateTime?
+  role     Role      @default(USER)
 
   events EventMember[]
 
@@ -79,4 +87,11 @@ model Verse {
   author String?
 
   @@map("verses")
+}
+
+model Settings {
+  id                 Int    @id @default(autoincrement())
+  photoSchedulerSpec String @map("photo_scheduler_spec")
+
+  @@map("settings")
 }
