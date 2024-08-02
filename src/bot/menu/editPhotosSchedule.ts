@@ -23,7 +23,7 @@ export const editPhotosScheduleMenu = new Menu<Context>("edit-photos-schedule-me
             selected.add(i)
           }
           
-          const spec = `* ${[...selected].join(",")} * * *`
+          const spec = `0 ${[...selected].join(",")} * * *`
           await settingsService.updateSettings({
             photoSchedulerSpec: spec
           })
