@@ -9,7 +9,17 @@ export class SettingsRepository {
   }
 
   async getSettings(): Promise<Settings> {
-    const settings = await this.prisma.settings.findFirstOrThrow()
+    let settings: Settings;
+
+    try {
+      settings = await this.prisma.settings.findFirstOrThrow()
+    } catch (err) {
+      settings = await this.prisma.settings.create({
+        data: {
+          photoSchedulerSpec: "* 18,21 * * *"
+        }
+      })
+    }
 
     return settings
   }
