@@ -11,7 +11,7 @@ import * as builders from '@/conversations';
 import { Context, sessionOptions } from '@/bot/context';
 import { onlyAdminOnDevelopment } from '@/middlewares';
 import { errorHandler } from '@/bot/error';
-import { deleteEventMenu, deleteTripMenu, editEventMenu, editTripMenu, mainMenu, signupTripsMenu, tripsMembersMenu } from '@/menu';
+import { deleteEventMenu, deleteTripMenu, editEventMenu, editPhotosScheduleMenu, editTripMenu, mainMenu, signupTripsMenu, tripsMembersMenu } from '@/menu';
 import { isAdminFilter, privateFilter } from '@/filters';
 
 if (!process.env.BOT_TOKEN) {
@@ -50,6 +50,7 @@ async function main() {
   bot.use(deleteTripMenu)
   bot.use(signupTripsMenu)
   bot.use(tripsMembersMenu)
+  bot.use(editPhotosScheduleMenu)
   bot.use(mainMenu);
 
   bot.command("start", commands.startCommand);

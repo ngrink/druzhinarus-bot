@@ -43,6 +43,7 @@ export const tripsMenu = new Menu<Context>("admin-trips-menu")
 export const postsMenu = new Menu<Context>("admin-posts-menu")
   .text("Очередь фотографий", handlers.showPhotosQueue).row()
   .text("Очистить очередь", handlers.clearPhotosQueue).row()
+  .text("Расписание публикаций", handlers.editPhotosScheduleHandler).row()
   .back("<- Назад");
 
 export const usersMenu = new Menu<Context>("admin-users-menu")
