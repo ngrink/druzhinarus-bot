@@ -88,3 +88,10 @@ model Verse {
 
   @@map("verses")
 }
+
+model Settings {
+  id                 Int    @id @default(autoincrement())
+  photoSchedulerSpec String @map("photo_scheduler_spec")
+
+  @@map("settings")
+}
