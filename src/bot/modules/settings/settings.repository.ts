@@ -16,7 +16,7 @@ export class SettingsRepository {
     } catch (err) {
       settings = await this.prisma.settings.create({
         data: {
-          photoSchedulerSpec: "* 18,21 * * *"
+          photoSchedulerSpec: "0 18,21 * * *"
         }
       })
     }
