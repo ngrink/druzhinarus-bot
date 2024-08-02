@@ -1,4 +1,5 @@
 npm run build
+npm run migrate:prod
 rsync -rzvh -u -e 'ssh -p 2224' --progress --delete --exclude=node_modules --exclude=.git ./ root@ngrink.ru:/srv/bots/druzhinarus-bot
 
 ssh -p 2224 root@ngrink.ru <<'ENDSSH'
