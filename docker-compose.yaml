@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:16.4
+    environment:
+      POSTGRES_DB: "druzhinarus-bot"
+      POSTGRES_USER: "druzhinarus-bot"
+      POSTGRES_PASSWORD: "ap!U9MfykFV5upAgYfDbcX"
+    ports:
+      - "5432:5432"
