@@ -7,8 +7,8 @@
     "build": "tsc && tsc-alias",
     "start:dev": "NODE_ENV=development nodemon",
     "start:prod": "NODE_ENV=production node dist/main.js",
-    "migrate:dev": "npx dotenv -e .env.development npx prisma migrate dev",
-    "migrate:prod": "npx dotenv -e .env.production npx prisma migrate deploy",
+    "migrate:dev": "npx dotenv -e env/.env.development npx prisma migrate dev",
+    "migrate:prod": "npx dotenv -e env/.env.production npx prisma migrate deploy",
     "prisma:generate": "npx prisma generate"
   },
   "author": "",
