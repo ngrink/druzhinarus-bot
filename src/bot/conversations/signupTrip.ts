@@ -25,7 +25,16 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
 
   if (!user.fullname) {
     await ctx.reply('1/4: *Введите ваше ФИО')
-    fullname = await conversation.form.text()
+
+    while (true) {
+      fullname = await conversation.form.text()
+
+      if (fullname.split(" ").length == 3) {
+        break;
+      } else {
+        await ctx.reply('Пожалуйста, введите полное ФИО')
+      }
+    }
   }
 
   if (!user.birthday) {
