@@ -12,6 +12,10 @@ export const setCommands = async (bot: Bot<Context>) => {
       description: 'Главное меню'
     },
     {
+      command:'help',
+      description: 'Справка по чат-боту'
+    },
+    {
       command: 'cancel',
       description: 'Отмена текущей операции'
     },

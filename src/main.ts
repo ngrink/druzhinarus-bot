@@ -55,6 +55,7 @@ async function main() {
 
   bot.command("start", commands.startCommand);
   bot.command('menu', commands.menuCommand);
+  bot.command('help', commands.helpCommand);
   bot.command('id', commands.getIdCommand);
 
   bot
