@@ -7,11 +7,12 @@ import { createPrivateMiddleware, isAdmin, isPrivate } from "@/filters";
 
 export const mainMenu = new Menu<Context>("main-menu")
   .text("Ближайшие мероприятия", handlers.upcomingEventsHandler).row()
-  .text("Записаться в поход", 
-    createPrivateMiddleware("Запись доступна в личных сообщениях бота"), 
-    handlers.signupTripMenuHandler).row()
+  .text("Записаться в поход",
+    createPrivateMiddleware("Запись доступна в личных сообщениях бота"),
+    handlers.signupTripMenuHandler
+  ).row()
   .text("Часто задаваемые вопросы", handlers.faqHandler).row()
-  
+
   .dynamic((ctx) => {
     const range = new MenuRange<Context>();
     if (isPrivate(ctx.chat?.type) && isAdmin(ctx.from!.id)) {
@@ -47,6 +48,7 @@ export const postsMenu = new Menu<Context>("admin-posts-menu")
   .back("<- Назад");
 
 export const usersMenu = new Menu<Context>("admin-users-menu")
+  .text("Список пользователей", handlers.getUsersHandler).row()
   .back("<- Назад");
 
 administrationMenu.register(eventsMenu)
