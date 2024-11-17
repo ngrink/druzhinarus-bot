@@ -8,10 +8,10 @@ import { conversations, createConversation } from '@grammyjs/conversations';
 import * as commands from '@/commands';
 import * as handlers from '@/handlers';
 import * as builders from '@/conversations';
+import * as middlewares from '@/middlewares';
+import * as menu from '@/menu';
 import { Context, sessionOptions } from '@/bot/context';
-import { onlyAdminOnDevelopment } from '@/middlewares';
 import { errorHandler } from '@/bot/error';
-import { deleteEventMenu, deleteTripMenu, editEventMenu, editPhotosScheduleMenu, editTripMenu, mainMenu, signupTripsMenu, tripsMembersMenu } from '@/menu';
 import { isAdminFilter, privateFilter } from '@/filters';
 
 if (!process.env.BOT_TOKEN) {
@@ -23,7 +23,8 @@ export const bot = new Bot<Context>(process.env.BOT_TOKEN);
 async function main() {
   await commands.setCommands(bot)
 
-  bot.use(onlyAdminOnDevelopment)
+  bot.use(middlewares.onlyAdminOnDevelopment)
+  bot.use(middlewares.checkUser)
   bot.use(hydrate())
   bot.use(session(sessionOptions))
   bot.use(conversations());
@@ -44,14 +45,14 @@ async function main() {
   bot.use(createConversation(builders.deleteTrip))
   bot.use(createConversation(builders.signupTrip))
 
-  bot.use(editEventMenu)
-  bot.use(deleteEventMenu)
-  bot.use(editTripMenu)
-  bot.use(deleteTripMenu)
-  bot.use(signupTripsMenu)
-  bot.use(tripsMembersMenu)
-  bot.use(editPhotosScheduleMenu)
-  bot.use(mainMenu);
+  bot.use(menu.editEventMenu)
+  bot.use(menu.deleteEventMenu)
+  bot.use(menu.editTripMenu)
+  bot.use(menu.deleteTripMenu)
+  bot.use(menu.signupTripsMenu)
+  bot.use(menu.tripsMembersMenu)
+  bot.use(menu.editPhotosScheduleMenu)
+  bot.use(menu.mainMenu);
 
   bot.command("start", commands.startCommand);
   bot.command('menu', commands.menuCommand);
