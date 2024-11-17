@@ -108,6 +108,8 @@
     /* Aliases */
     "baseUrl": "./src",
     "paths": {
+      "@/modules": ["./modules"],
+      "@/modules/*": ["./modules/*"],
       "@/commands": ["./bot/commands"],
       "@/conversations": ["./bot/conversations"],
       "@/data": ["./bot/data"],
@@ -117,8 +119,6 @@
       "@/keyboards": ["./bot/keyboards"],
       "@/menu": ["./bot/menu"],
       "@/middlewares": ["./bot/middlewares"],
-      "@/modules": ["./bot/modules"],
-      "@/modules/*": ["./bot/modules/*"],
       "@/scheduler": ["./bot/scheduler"],
       "@/*": ["./*"],
     },

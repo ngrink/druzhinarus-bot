@@ -30,12 +30,12 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
 
   if (!user.birthday) {
     await ctx.reply('2/4: *Введите дату рождения')
-  
+
     while (true) {
       try {
         const birthdayString = await conversation.form.text()
         birthday = parse(birthdayString, 'dd.MM.y', new Date())
-  
+
         if (!Number.isNaN(birthday.valueOf())) {
           break;
         } else {
@@ -49,7 +49,7 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
 
   if (!user.phone) {
     await ctx.reply('3/4: *Введите ваш номер телефона')
-  
+
     while (true) {
       phone = await conversation.form.text()
       if (phone.match(/^\+7\d{10}$/)) {
@@ -68,11 +68,11 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
       return
     }
   }
-  
+
   await conversation.external(async () => {
     if (fullname || birthday || phone) {
       user = await usersService.updateUser(user.id, {
-        fullname: fullname, 
+        fullname: fullname,
         phone: phone,
         birthday: birthday,
       })

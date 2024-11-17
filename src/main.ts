@@ -1,4 +1,4 @@
-import 'config'
+import '@/config'
 import '@/scheduler'
 
 import { Bot, session } from "grammy";

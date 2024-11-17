@@ -1,5 +1,5 @@
 import { Context } from "@/bot/context";
-import { adminIds } from "@/data";
+import { adminIds } from "@/config";
 
 export const isAdmin = (userId: number) => {
   return adminIds.includes(userId)

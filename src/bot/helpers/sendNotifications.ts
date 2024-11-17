@@ -1,5 +1,5 @@
 import { Context } from "@/bot/context"
-import { notificationChatIds } from "@/data"
+import { notificationChatIds } from "@/config"
 
 export const sendNotifications = async (ctx: Context, message: string) => {
   await Promise.allSettled(
