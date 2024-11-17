@@ -14,7 +14,7 @@ export const startCommand: Middleware<Context> = async (ctx: Context) => {
     await usersService.createUser({
       id,
       username,
-      fullname: `${first_name} ${last_name}`
+      fullname_telegram: `${first_name} ${last_name}`
     })
   }
 

@@ -20,12 +20,13 @@ enum Role {
 }
 
 model User {
-  id       Int       @id
-  username String?   @unique
-  fullname String?
-  phone    String?
-  birthday DateTime?
-  role     Role      @default(USER)
+  id                Int       @id
+  username          String?   @unique
+  fullname          String?
+  fullname_telegram String?
+  phone             String?
+  birthday          DateTime?
+  role              Role      @default(USER)
 
   events EventMember[]
 
