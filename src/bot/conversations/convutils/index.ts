@@ -1,4 +1,6 @@
 import { text, textOptional } from "./text";
+import { int, intOptional } from "./int";
+import { number, numberOptional } from "./number";
 import { date, dateOptional } from "./date";
 import { shortDate, shortDateOptional } from "./shortdate";
 import { upcomingDate, upcomingDateOptional } from "./upcomingDate";
@@ -9,6 +11,8 @@ import { confirm, confirmOptional } from "./confirm";
 
 export const convutils = {
   text,
+  int,
+  number,
   date,
   shortDate,
   upcomingDate,
@@ -17,6 +21,8 @@ export const convutils = {
   phone,
   confirm,
   textOptional,
+  intOptional,
+  numberOptional,
   dateOptional,
   shortDateOptional,
   upcomingDateOptional,
