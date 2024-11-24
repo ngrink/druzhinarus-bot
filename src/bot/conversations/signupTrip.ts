@@ -1,10 +1,10 @@
 import { Conversation } from "@grammyjs/conversations";
-import { parse } from "date-fns";
 
 import { Context } from "@/bot/context";
 import { formatMember, formatMessage, sendNotifications } from "@/helpers";
 import { usersService } from "@/modules/users";
 import { eventsService } from "@/modules/events";
+import { convutils } from "./convutils";
 
 export async function signupTrip(conversation: Conversation<Context>, ctx: Context) {
   const eventId = Number(ctx.match)
@@ -24,55 +24,25 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   let birthday: Date;
 
   if (!user.fullname) {
-    await ctx.reply('1/4: *Введите ваше ФИО')
-
-    while (true) {
-      fullname = await conversation.form.text()
-
-      if (fullname.split(" ").length == 3) {
-        break;
-      } else {
-        await ctx.reply('Пожалуйста, введите полное ФИО')
-      }
-    }
+    await ctx.reply('1/4: Введите ваше ФИО')
+    fullname = await convutils.fullname(conversation, ctx)
   }
 
   if (!user.birthday) {
-    await ctx.reply('2/4: *Введите дату рождения')
-
-    while (true) {
-      try {
-        const birthdayString = await conversation.form.text()
-        birthday = parse(birthdayString, 'dd.MM.y', new Date())
-
-        if (!Number.isNaN(birthday.valueOf())) {
-          break;
-        } else {
-          await ctx.reply('Неверный формат. Пожалуйста, введите дату в формате "00.00.0000"')
-        }
-      } catch (e) {
-        await ctx.reply('Неверный формат. Пожалуйста, введите дату в формате "00.00.0000"')
-      }
-    }
+    await ctx.reply('2/4: Введите дату рождения')
+    birthday = await convutils.shortDate(conversation, ctx)
   }
 
   if (!user.phone) {
-    await ctx.reply('3/4: *Введите ваш номер телефона')
-
-    while (true) {
-      phone = await conversation.form.text()
-      if (phone.match(/^\+7\d{10}$/)) {
-        break;
-      } else {
-        await ctx.reply('Неверный формат. Пожалуйста, введите номер телефона в формате "+7XXXXXXXXXX"')
-      }
-    }
+    await ctx.reply('3/4: Введите ваш номер телефона')
+    phone = await convutils.phone(conversation, ctx)
   }
 
   if (!user.fullname || !user.phone || !user.birthday) {
-    await ctx.reply('4/4: *Согласен на обработку персональных данных (да)')
-    const confirm = await conversation.form.text()
-    if (confirm.toLocaleLowerCase() != "да") {
+    await ctx.reply('4/4: Согласен на обработку персональных данных (да)')
+
+    const confirm = await convutils.confirm(conversation, ctx)
+    if (!confirm) {
       await ctx.reply('Отмена записи')
       return
     }
