@@ -13,7 +13,9 @@ export const getUsersHandler: Middleware<Context> = async (ctx: Context) => {
   }
 
   const message: string = users.map((user, i) => {
-    return `${i+1}: ${user.fullname} [@${user.username}](${user.username})`
+    const fullname = user.fullname || user.fullname_telegram
+
+    return `${i+1}: ${fullname} [@${user.username}](${user.username})`
   }).join('\n')
 
   await ctx.reply(message, {
