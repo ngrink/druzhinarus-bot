@@ -33,7 +33,7 @@ export async function editTrip(conversation: Conversation<Context>, ctx: Context
   const eventEndDate = await convutils.upcomingDateOptional(conversation,ctx)
 
   await ctx.reply('4/4: Добавьте новую ссылку на подробности')
-  let eventLink = await convutils.linkOptional(conversation,ctx)
+  let eventLink = await convutils.urlOptional(conversation,ctx)
 
   await conversation.external(async () => {
     await eventsService.updateEvent(eventId, {

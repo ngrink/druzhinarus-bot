@@ -17,7 +17,7 @@ export async function addEvent(conversation: Conversation<Context>, ctx: Context
   const eventEndDate = await convutils.upcomingDateOptional(conversation, ctx);
 
   await ctx.reply('4/4: Добавьте ссылку на подробности (опционально)')
-  const eventLink = await convutils.linkOptional(conversation, ctx)
+  const eventLink = await convutils.urlOptional(conversation, ctx)
 
   await conversation.external(async () => {
     await eventsService.createEvent({

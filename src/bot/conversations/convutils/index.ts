@@ -4,7 +4,7 @@ import { number, numberOptional } from "./number";
 import { date, dateOptional } from "./date";
 import { shortDate, shortDateOptional } from "./shortdate";
 import { upcomingDate, upcomingDateOptional } from "./upcomingDate";
-import { link, linkOptional } from "./link";
+import { url, urlOptional } from "./url";
 import { fullname, fullnameOptional } from "./fullname";
 import { phone, phoneOptional } from "./phone";
 import { confirm, confirmOptional } from "./confirm";
@@ -16,7 +16,7 @@ export const convutils = {
   date,
   shortDate,
   upcomingDate,
-  link,
+  url,
   fullname,
   phone,
   confirm,
@@ -26,7 +26,7 @@ export const convutils = {
   dateOptional,
   shortDateOptional,
   upcomingDateOptional,
-  linkOptional,
+  urlOptional,
   fullnameOptional,
   phoneOptional,
   confirmOptional,
