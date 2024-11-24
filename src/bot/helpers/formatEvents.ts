@@ -3,7 +3,6 @@ import { ru } from "date-fns/locale"
 
 import { Event, EventMember } from "@prisma/client"
 import { formatMessage, getWordWithEnding, isURL } from "@/bot/helpers"
-import { MembersFlavor } from "@/modules/events"
 
 type formatEventsOptions = {
   enumerate?: boolean,
@@ -47,11 +46,17 @@ export const formatDateRange = (start: Date, end?: Date | null): string => {
     return `${startDate}`
   }
 
+  let formatted;
+
   if (start.getMonth() == end?.getMonth()) {
-    return `${startDay} - ${endDate}`
+    formatted = `${startDay} - ${endDate}`
   } else {
-    return `${startDate} - ${endDate}`
+    formatted = `${startDate} - ${endDate}`
   }
+
+  if (start.getFullYear() != new Date().getFullYear()) {
+    formatted += ` (${start.getFullYear()})`
+  }
+
+  return formatted
 }
-
-
