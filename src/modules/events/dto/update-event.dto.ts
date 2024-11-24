@@ -5,6 +5,6 @@ export class UpdateEventDto {
   type?: EventType;
   startDate?: Date;
   endDate?: Date;
-  link?: string
-  isPublic?: boolean
+  link?: string;
+  isPublic?: boolean;
 }

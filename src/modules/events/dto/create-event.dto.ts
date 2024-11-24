@@ -5,6 +5,6 @@ export class CreateEventDto {
   type!: EventType;
   startDate!: Date;
   endDate?: Date;
-  link?: string
-  isPublic?: boolean
+  link?: string;
+  isPublic?: boolean;
 }
