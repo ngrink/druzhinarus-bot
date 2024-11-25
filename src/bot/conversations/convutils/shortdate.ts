@@ -10,7 +10,7 @@ export const shortDate = async (conversation: Conversation<Context>, ctx: Contex
       const text = await conversation.form.text()
 
       const date = parse(text, 'dd.MM.y', new Date())
-      if (!Number.isNaN(date.valueOf())) {
+      if (Number.isNaN(date.valueOf())) {
         await ctx.reply('Неверный формат. Пожалуйста, введите дату в формате "00.00.0000"')
         continue
       }
@@ -31,7 +31,7 @@ export const shortDateOptional = async (conversation: Conversation<Context>, ctx
       }
 
       const date = parse(text, 'dd.MM.y', new Date())
-      if (!Number.isNaN(date.valueOf())) {
+      if (Number.isNaN(date.valueOf())) {
         await ctx.reply('Неверный формат. Пожалуйста, введите дату в формате "00.00.0000"')
         continue
       }
