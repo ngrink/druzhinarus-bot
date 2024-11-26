@@ -11,13 +11,15 @@ export const vk = async (conversation: Conversation<Context>, ctx: Context) => {
     const url = await conversation.form.text()
 
     if (!isURL(url) || !url.startsWith('https://vk.com/')) {
-      await ctx.reply('Введите ссылку начинающуюся с https://vk.com/')
+      await ctx.reply('Введите ссылку начинающуюся с https://vk.com/', {
+        // @ts-ignore
+        disable_web_page_preview: true
+      })
       continue
     }
 
-    const req = await axios.head(url)
-    console.log(req)
-    if (req.status !== 200) {
+    const res = await axios.get(url).catch((e) => null)
+    if (!res) {
       await ctx.reply('Введите корректную ссылку на свой профиль')
       continue
     }
@@ -34,12 +36,15 @@ export const vkOptional = async (conversation: Conversation<Context>, ctx: Conte
     }
 
     if (!isURL(url) || !url.startsWith('https://vk.com/')) {
-      await ctx.reply('Введите ссылку начинающуюся с https://vk.com/')
+      await ctx.reply('Введите ссылку начинающуюся с https://vk.com/', {
+        // @ts-ignore
+        disable_web_page_preview: true
+      })
       continue
     }
 
-    const req = await axios.head(url)
-    if (req.status !== 200) {
+    const res = await axios.get(url).catch((e) => null)
+    if (!res) {
       await ctx.reply('Введите корректную ссылку на свой профиль')
       continue
     }
