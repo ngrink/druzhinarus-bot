@@ -8,6 +8,7 @@ import { url, urlOptional } from "./url";
 import { fullname, fullnameOptional } from "./fullname";
 import { phone, phoneOptional } from "./phone";
 import { confirm, confirmOptional } from "./confirm";
+import { vk, vkOptional } from "./vk";
 
 export const convutils = {
   text,
@@ -20,6 +21,7 @@ export const convutils = {
   fullname,
   phone,
   confirm,
+  vk,
   textOptional,
   intOptional,
   numberOptional,
@@ -30,4 +32,5 @@ export const convutils = {
   fullnameOptional,
   phoneOptional,
   confirmOptional,
+  vkOptional
 }
