@@ -22,24 +22,30 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   let fullname: string;
   let phone: string;
   let birthday: Date;
+  let vk: string;
 
   if (!user.fullname) {
-    await ctx.reply('1/4: Введите ваше ФИО')
+    await ctx.reply('1/5: Введите ваше ФИО')
     fullname = await convutils.fullname(conversation, ctx)
   }
 
   if (!user.birthday) {
-    await ctx.reply('2/4: Введите дату рождения')
+    await ctx.reply('2/5: Введите дату рождения')
     birthday = await convutils.shortDate(conversation, ctx)
   }
 
   if (!user.phone) {
-    await ctx.reply('3/4: Введите ваш номер телефона')
+    await ctx.reply('3/5: Введите ваш номер телефона')
     phone = await convutils.phone(conversation, ctx)
   }
 
-  if (!user.fullname || !user.phone || !user.birthday) {
-    await ctx.reply('4/4: Согласен на обработку персональных данных (да)')
+  if (!user.vk) {
+    await ctx.reply('4/5: Введите ссылку на свой профиль ВК')
+    vk = await convutils.vk(conversation, ctx)
+  }
+
+  if (!user.fullname || !user.phone || !user.birthday || !user.vk) {
+    await ctx.reply('5/5: Согласен на обработку персональных данных (да)')
 
     const confirm = await convutils.confirm(conversation, ctx)
     if (!confirm) {
@@ -49,11 +55,12 @@ export async function signupTrip(conversation: Conversation<Context>, ctx: Conte
   }
 
   await conversation.external(async () => {
-    if (fullname || birthday || phone) {
+    if (fullname || birthday || phone || vk) {
       user = await usersService.updateUser(user.id, {
         fullname: fullname,
         phone: phone,
         birthday: birthday,
+        vk: vk,
       })
     }
 

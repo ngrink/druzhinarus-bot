@@ -26,6 +26,7 @@ model User {
   fullname_telegram String?
   phone             String?
   birthday          DateTime?
+  vk                String?
   role              Role      @default(USER)
 
   events EventMember[]
