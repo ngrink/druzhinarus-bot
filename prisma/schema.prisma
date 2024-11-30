@@ -35,13 +35,16 @@ model User {
 }
 
 model Event {
-  id        Int       @id @default(autoincrement())
-  type      EventType
-  title     String
-  startDate DateTime
-  endDate   DateTime?
-  link      String?
-  isPublic  Boolean   @default(true)
+  id              Int       @id @default(autoincrement())
+  type            EventType
+  title           String
+  startDate       DateTime
+  endDate         DateTime?
+  link            String?
+  price           Int?
+  discountedPrice Int?
+  discountEndDate DateTime?
+  isPublic        Boolean   @default(true)
 
   members EventMember[]
 

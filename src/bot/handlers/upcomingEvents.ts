@@ -8,7 +8,7 @@ export const upcomingEventsHandler: Middleware<Context> = async (ctx: Context) =
   const events = (await eventsService.getUpcomingEvents())
 
   const formattedEvents = events
-    .map(event => formatEvent(event, {links: true}))
+    .map(event => formatEvent(event, {links: true, prices: true}))
     .join('\n\n')
 
   if (formattedEvents) {

@@ -7,7 +7,9 @@ import { formatMessage, getWordWithEnding, isURL } from "@/bot/helpers"
 type formatEventsOptions = {
   enumerate?: boolean,
   links?: boolean,
-  members?: EventMember[]
+  members?: EventMember[],
+  prices?: boolean,
+  markdown?: boolean
 }
 
 type formatEventOptions = formatEventsOptions
@@ -28,6 +30,7 @@ export const formatEvent = (event: Event, options?: formatEventOptions): string 
   return formatMessage`
     ${formatDateRange(event.startDate, event.endDate)}${options?.members ? membersLabel : ''}
     ${options?.links && hasLink ? `<a href="${event.link}">`: ''}<b>${event.title}</b>${options?.links && hasLink ? `</a>`: ''}
+    ${options?.prices && formatPrice(event)}
   `
 }
 
@@ -54,9 +57,24 @@ export const formatDateRange = (start: Date, end?: Date | null): string => {
     formatted = `${startDate} - ${endDate}`
   }
 
-  if (start.getFullYear() != new Date().getFullYear()) {
-    formatted += ` (${start.getFullYear()})`
+  return formatted
+}
+
+
+export const formatPrice = (event: Event): string => {
+  const {price, discountedPrice, discountEndDate} = event
+
+  if (!price) {
+    return ""
   }
 
-  return formatted
+  if (discountedPrice && discountEndDate) {
+    return `<s>${price} руб.</s> ${discountedPrice} руб.\n(до ${formatDate(discountEndDate, 'dd MMMM', {locale: ru})})`
+  }
+
+  if (event.discountedPrice) {
+    return `<s>${price} руб.</s> ${discountedPrice} руб.`
+  }
+
+  return `${event.price} руб.`
 }

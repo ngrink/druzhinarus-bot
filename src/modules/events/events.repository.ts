@@ -26,12 +26,15 @@ export class EventsRepository {
         endDate: data.endDate,
         link: data.link,
         isPublic: data.isPublic,
+        price: data.price,
+        discountedPrice: data.discountedPrice,
+        discountEndDate: data.discountEndDate,
       }
     })
 
     return event
   }
-  
+
   async getEvents(): Promise<Event[]> {
     const events = await this.prisma.event.findMany({
       orderBy: [
