@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator shared_client {
+  provider = "prisma-client-js"
+  output   = "../shared/generated/prisma/client"
+}
+
+generator types {
+  provider                        = "prisma-types-generator"
+  output                          = "../shared/generated/prisma/types"
+  outputToNestJsResourceStructure = "false"
+  flatResourceStructure           = "false"
+  exportRelationModifierClasses   = "true"
+  reExport                        = "false"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Dto"
+  entityPrefix                    = ""
+  entitySuffix                    = ""
+  classValidation                 = "false"
+  fileNamingStyle                 = "camel"
+  noDependencies                  = "false"
+  excludeEntity                   = "false"
+  excludePlainDto                 = "false"
+  excludeCreateDto                = "true"
+  excludeUpdateDto                = "true"
+  excludeConnectDto               = "true"
+  definiteAssignmentAssertion     = "false"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+  output   = "../shared/generated/prisma/dbml"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+enum EventType {
+  COMMON
+  TRIP
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+  USER
+}
+
+enum AccountType {
+  TELEGRAM
+  VK
+}
+
+model User {
+  id       Int           @id @default(autoincrement())
+  fullname String
+  phone    String?       @unique
+  email    String?       @unique
+  birthday DateTime?
+  vk       String?
+  role     Role          @default(USER)
+  events   EventMember[]
+  accounts Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  type      AccountType
+  channelId Int
+  username  String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, type])
+  @@map("accounts")
+}
+
+model Event {
+  id              Int       @id @default(autoincrement())
+  type            EventType
+  title           String
+  startDate       DateTime
+  endDate         DateTime?
+  link            String?
+  price           Int?
+  discountedPrice Int?
+  discountEndDate DateTime?
+  isPublic        Boolean   @default(true)
+
+  members EventMember[]
+
+  @@map("events")
+}
+
+model EventMember {
+  eventId Int
+  userId  Int
+  event   Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, userId])
+  @@map("members")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  posts            Post[]
+  CategorySchedule CategorySchedule[]
+
+  @@map("categories")
+}
+
+model CategorySchedule {
+  weekday    Int
+  hour       Int
+  categoryId Int?
+
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([weekday, hour])
+  @@map("category_schedules")
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  content    String
+  isQueued   Boolean
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@map("posts")
+}
+
+model Question {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+
+  @@map("questions")
+}
+
+model Photo {
+  id      Int     @id @default(autoincrement())
+  fileId  String
+  groupId String?
+  isUsed  Boolean @default(false)
+
+  @@map("photos")
+}
+
+model Quote {
+  id     Int     @id @default(autoincrement())
+  text   String
+  author String?
+
+  @@map("quotes")
+}
+
+model Verse {
+  id     Int     @id @default(autoincrement())
+  text   String
+  author String?
+
+  @@map("verses")
+}
+
+model Settings {
+  id                 Int    @id @default(autoincrement())
+  photoSchedulerSpec String @map("photo_scheduler_spec")
+
+  @@map("settings")
+}
