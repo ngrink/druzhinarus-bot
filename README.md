@@ -1,1 +1,1 @@
-# druzhinarus-bot
+# chatbot
