@@ -1,7 +1,0 @@
-export class UpdateUserDto {
-  username?: string;
-  fullname?: string;
-  phone?: string;
-  birthday?: Date;
-  vk?: string;
-}
