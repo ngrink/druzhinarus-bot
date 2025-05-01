@@ -1,85 +1,89 @@
-import { formatDate } from "date-fns"
-import { ru } from "date-fns/locale"
+import { formatDate } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
-<<<<<<< Updated upstream:src/bot/helpers/formatEvents.ts
-import { Event, EventMember } from "@prisma/client"
-import { formatMessage, getWordWithEnding, isURL } from "@/bot/helpers"
-=======
-import { Event, EventMember } from "../generated/prisma/client"
-import { formatMessage, getWordWithEnding, isURL } from "./"
->>>>>>> Stashed changes:services/core/shared/helpers/formatEvents.ts
+import { Event, EventMember } from '../generated/prisma/client';
+import { formatMessage, getWordWithEnding, isURL } from './';
 
 type formatEventsOptions = {
-  enumerate?: boolean,
-  links?: boolean,
-  members?: EventMember[],
-  prices?: boolean,
-  markdown?: boolean
-}
+  enumerate?: boolean;
+  links?: boolean;
+  members?: EventMember[];
+  prices?: boolean;
+  markdown?: boolean;
+};
 
-type formatEventOptions = formatEventsOptions
+type formatEventOptions = formatEventsOptions;
 
-export const formatEvents = (events: Event[], options?: formatEventsOptions): string => {
+export const formatEvents = (
+  events: Event[],
+  options?: formatEventsOptions,
+): string => {
   if (options?.enumerate) {
-    return events.map((event, i) => `[${i+1}]\n${formatEvent(event, options)}`).join('\n\n')
+    return events
+      .map((event, i) => `[${i + 1}]\n${formatEvent(event, options)}`)
+      .join('\n\n');
   }
 
-  return events.map((event) => formatEvent(event, options)).join('\n\n')
-}
+  return events.map((event) => formatEvent(event, options)).join('\n\n');
+};
 
-export const formatEvent = (event: Event, options?: formatEventOptions): string => {
-  const hasLink = event.link ? isURL(event.link) : false
-  const members = options?.members || []
-  const membersLabel = ` (${members.length} ${getWordWithEnding(members.length, 'участник', ['', 'а', 'ов'])}) `
+export const formatEvent = (
+  event: Event,
+  options?: formatEventOptions,
+): string => {
+  const hasLink = event.link ? isURL(event.link) : false;
+  const members = options?.members || [];
+  const membersLabel = ` (${members.length} ${getWordWithEnding(members.length, 'участник', ['', 'а', 'ов'])}) `;
 
   return formatMessage`
     ${formatDateRange(event.startDate, event.endDate)}${options?.members ? membersLabel : ''}
-    ${options?.links && hasLink ? `<a href="${event.link}">`: ''}<b>${event.title}</b>${options?.links && hasLink ? `</a>`: ''}
+    ${options?.links && hasLink ? `<a href="${event.link}">` : ''}<b>${event.title}</b>${options?.links && hasLink ? `</a>` : ''}
     ${options?.prices && formatPrice(event)}
-  `
-}
+  `;
+};
 
 export const formatDateRange = (start: Date, end?: Date | null): string => {
   const startDay = formatDate(start, 'dd', {
-    locale: ru
-  })
+    locale: ru,
+  });
   const startDate = formatDate(start, 'dd MMMM', {
-    locale: ru
-  })
-  const endDate = end ? formatDate(end, 'dd MMMM', {
-    locale: ru
-  }) : null
+    locale: ru,
+  });
+  const endDate = end
+    ? formatDate(end, 'dd MMMM', {
+        locale: ru,
+      })
+    : null;
 
-  if (!endDate || endDate && startDate == endDate) {
-    return `${startDate}`
+  if (!endDate || (endDate && startDate == endDate)) {
+    return `${startDate}`;
   }
 
   let formatted;
 
   if (start.getMonth() == end?.getMonth()) {
-    formatted = `${startDay} - ${endDate}`
+    formatted = `${startDay} - ${endDate}`;
   } else {
-    formatted = `${startDate} - ${endDate}`
+    formatted = `${startDate} - ${endDate}`;
   }
 
-  return formatted
-}
-
+  return formatted;
+};
 
 export const formatPrice = (event: Event): string => {
-  const {price, discountedPrice, discountEndDate} = event
+  const { price, discountedPrice, discountEndDate } = event;
 
   if (!price) {
-    return ""
+    return '';
   }
 
   if (discountedPrice && discountEndDate) {
-    return `<s>${price} руб.</s> ${discountedPrice} руб.\n(до ${formatDate(discountEndDate, 'dd MMMM', {locale: ru})})`
+    return `<s>${price} руб.</s> ${discountedPrice} руб.\n(до ${formatDate(discountEndDate, 'dd MMMM', { locale: ru })})`;
   }
 
   if (event.discountedPrice) {
-    return `<s>${price} руб.</s> ${discountedPrice} руб.`
+    return `<s>${price} руб.</s> ${discountedPrice} руб.`;
   }
 
-  return `${event.price} руб.`
-}
+  return `${event.price} руб.`;
+};

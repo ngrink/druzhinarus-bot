@@ -1,16 +1,12 @@
 import { Middleware } from "grammy";
 
 import { mainMenu } from "@/menu";
-<<<<<<< Updated upstream:src/bot/commands/start.ts
-import { formatMessage } from "@/helpers";
-import { Context } from "@/bot/context";
-=======
 import { formatMessage } from "@/shared/helpers";
 import { Context } from "@/context";
->>>>>>> Stashed changes:services/telegram/src/commands/start.ts
 
 export const startCommand: Middleware<Context> = async (ctx: Context) => {
-  ctx.reply(formatMessage`
+  ctx.reply(
+    formatMessage`
     Приветствую! Это чат-бот клуба исторической реконструкции "Морская дружина Рус". Здесь можно получить актуальную информацию по ближайшим мероприятиям, записаться в поход
 
     Полезные ссылки:
@@ -22,10 +18,12 @@ export const startCommand: Middleware<Context> = async (ctx: Context) => {
     [О вступлении в клуб](https://druzhinarus.org/about/documents)
 
     Бот находится в разработке, по всем вопросам и предложeниям обращаться к [разработчику](https://t.me/ngrink)
-  `, {
-    parse_mode: 'Markdown',
-    reply_markup: mainMenu,
-    // @ts-ignore
-    disable_web_page_preview: true,
-  });
-}
+  `,
+    {
+      parse_mode: "Markdown",
+      reply_markup: mainMenu,
+      // @ts-ignore
+      disable_web_page_preview: true,
+    }
+  );
+};

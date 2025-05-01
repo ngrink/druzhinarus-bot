@@ -2,13 +2,8 @@ import { Conversation } from "@grammyjs/conversations";
 import { parse } from "date-fns";
 import { ru } from "date-fns/locale";
 
-<<<<<<< Updated upstream:src/bot/conversations/convutils/date.ts
-import { Context } from "@/bot/context";
-import { SKIP_SYMBOL } from "@/constants";
-=======
 import { Context } from "@/context";
 import { SKIP_SYMBOL } from "@/shared/constants";
->>>>>>> Stashed changes:services/telegram/src/conversations/convutils/date.ts
 
 export const date = async (conversation: Conversation<Context>, ctx: Context) => {
   let text: string;

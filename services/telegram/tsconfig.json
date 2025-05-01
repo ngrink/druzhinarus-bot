@@ -107,25 +107,9 @@
 
     "baseUrl": ".",
     "paths": {
-<<<<<<< Updated upstream:tsconfig.json
-      "@/modules": ["./modules"],
-      "@/modules/*": ["./modules/*"],
-      "@/commands": ["./bot/commands"],
-      "@/conversations": ["./bot/conversations"],
-      "@/data": ["./bot/data"],
-      "@/filters": ["./bot/filters"],
-      "@/handlers": ["./bot/handlers"],
-      "@/helpers": ["./bot/helpers"],
-      "@/keyboards": ["./bot/keyboards"],
-      "@/menu": ["./bot/menu"],
-      "@/middlewares": ["./bot/middlewares"],
-      "@/scheduler": ["./bot/scheduler"],
-      "@/*": ["./*"],
-=======
       "@/*": ["./src/*"],
       "@/shared/*": ["../core/shared/*"],
       "@prisma/client": ["../core/shared/generated/prisma/client"]
->>>>>>> Stashed changes:services/telegram/tsconfig.json
     },
     "outDir": "dist",
     "strictPropertyInitialization": false,
