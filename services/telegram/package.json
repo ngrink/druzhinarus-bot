@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "start:dev": "NODE_ENV=development nodemon",
-    "start:prod": "NODE_ENV=production node -r tsconfig-paths/register dist/src/main.js",
+    "start:prod": "NODE_ENV=production node -r tsconfig-paths/register dist/telegram/src/main.js",
     "test": "jest"
   },
   "author": "",
